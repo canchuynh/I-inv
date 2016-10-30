@@ -42,12 +42,12 @@ captures/
 # GIT IGNORE FOR INVETORY PROGJECT
 *.iml
 Inventory/.gradle
-Inventory//local.properties
-Inventory//.idea/workspace.xml
-Inventory//.idea/libraries
+Inventory/local.properties
+Inventory/.idea/workspace.xml
+Inventory/.idea/libraries
 Inventory/.DS_Store
-Inventory//build
-Inventory//captures
+Inventory/build
+Inventory/captures
 Inventory/.externalNativeBuild
 
 
