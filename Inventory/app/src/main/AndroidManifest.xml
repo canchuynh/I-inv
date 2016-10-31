@@ -19,7 +19,8 @@
         <activity
             android:name=".ViewItemsActivity"
             android:label="@string/title_activity_view_items"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddItemActivity"></activity>
     </application>
 
 </manifest>
