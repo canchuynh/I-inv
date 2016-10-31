@@ -11,6 +11,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="me.henrylai.inventory.ItemDetailsActivity">
 
+    <fragment
+        android:name="me.henrylai.inventory.MenuFragment"
+        android:id="@+id/menu_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_menu" />
+
     <TextView
         android:text="PLACEHOLDER FOR ITEM DETAILS"
         android:layout_width="wrap_content"
