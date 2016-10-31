@@ -78,16 +78,17 @@
         android:text="DELETE THIS ITEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
+        android:id="@+id/deleteItemButton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="deleteItem"/>
 
     <Button
         android:text="EDIT ITEM DETAILS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button3"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/deleteItemButton"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
