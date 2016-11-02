@@ -1,10 +1,8 @@
 package me.henrylai.inventory;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -24,7 +22,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // array of string of items
-        String[] items = {"Oranges", "Batteries", "porn"};
+        String[] items = {"Oranges", "Batteries", "Apples", "Corn"};
 
         //setting up adapter for listvirw
         ArrayAdapter<String> itemsAdapter =
