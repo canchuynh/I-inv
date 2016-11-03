@@ -48,8 +48,12 @@ public class Item {
         this.mDescription = theDescription;
     }
 
+    //no id
+    public Item (String theName, double theValue, String theCondition, String theDescription) {
+        this(0, theName, theValue, theCondition, theDescription);
+    }
 
-    public String getmName() {
+        public String getmName() {
         return mName;
     }
 

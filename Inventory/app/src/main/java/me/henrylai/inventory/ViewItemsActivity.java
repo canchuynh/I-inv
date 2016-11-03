@@ -5,10 +5,16 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.List;
+
+import me.henrylai.inventory.data.Item;
+import me.henrylai.inventory.data.SQLiteDBHandler;
 
 public class ViewItemsActivity extends AppCompatActivity {
 
@@ -51,6 +57,24 @@ public class ViewItemsActivity extends AppCompatActivity {
                 startActivity(addItem);
             }
         });
+
+        //TODO DELETE THIS AND THE METHOD BEFORE ANY SUBMISSIONS
+        runTestingCode();
     }
 
+    // TODO: TO BE DELETED
+    private void runTestingCode() {
+        SQLiteDBHandler db = new SQLiteDBHandler(this);
+
+        Log.d("Insert: ", "Inserting ..");
+
+        List<Item> allitems = db.getAllItems();
+
+        for (Item item : allitems) {
+            String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
+                    + item.getmValue() + ", Condition: " + item.getmCondition() + ", Description: " + item.getmDescription();
+            Log.d("Items: : ", log);
+
+        }
+    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
     private static final String DATABASE_NAME = "Inventory";
     // Inventory table name
@@ -34,19 +34,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE" + TABLE_ITEMS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_ITEMS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + NAME + " TEXT NOT NULL,"
-                + VALUE + "REAL"
-                + CONDITION + "TEXT"
-                + DESCRIPTION + "TEXT"
+                + VALUE + " REAL,"
+                + CONDITION + " TEXT,"
+                + DESCRIPTION + " TEXT"
                 + ")";
         db.execSQL(CREATE_TABLE);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS" + TABLE_ITEMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
         // Creating tables again
         onCreate(db);
     }
