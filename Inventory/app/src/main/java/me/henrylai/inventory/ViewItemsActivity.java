@@ -66,13 +66,21 @@ public class ViewItemsActivity extends AppCompatActivity {
     private void runTestingCode() {
         SQLiteDBHandler db = new SQLiteDBHandler(this);
 
+        // Inserting Items/Rows
         Log.d("Insert: ", "Inserting ..");
+        db.addItem(new Item("Dockers", 3.52,null,null));
+        db.addItem(new Item("Dunkin Donuts", 4.51, "good condition", "a healthy donut description"));
+        db.addItem(new Item("Pizza Porlar",5.5,null,null));
+        db.addItem(new Item("Computer",7.8,null,null));
 
+        // Reading all items
+        Log.d("Reading: ", "Reading all items..");
         List<Item> allitems = db.getAllItems();
 
         for (Item item : allitems) {
             String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
                     + item.getmValue() + ", Condition: " + item.getmCondition() + ", Description: " + item.getmDescription();
+            // Writing items to log
             Log.d("Items: : ", log);
 
         }
