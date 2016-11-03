@@ -11,23 +11,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="me.henrylai.inventory.AddItemActivity">
 
-    <fragment
-        android:name="me.henrylai.inventory.MenuFragment"
-        android:id="@+id/menu_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_menu" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/item_name_field"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Enter the name of the @string/title_activity_view_items"
+        android:hint="Name (required)"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -37,22 +30,61 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/add_item_button" />
+        android:id="@+id/item_add_button" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/item_value_field"
+        android:layout_below="@+id/item_name_field"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Value"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/item_condition_field"
+        android:hint="Condition"
+        android:layout_below="@+id/item_value_field"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/item_description_field"
+        android:layout_below="@+id/item_condition_field"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Description"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
         app:srcCompat="@mipmap/ic_launcher"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/imageView3"
+        android:id="@+id/item_image_preview"
         android:layout_width="150dp"
-        android:layout_height="150dp" />
+        android:layout_height="150dp"
+        android:layout_below="@+id/item_description_field"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="ADD A PICTURE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:layout_below="@+id/imageView3"
+        android:id="@+id/item_add_image_button"
+        android:layout_below="@+id/item_image_preview"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
