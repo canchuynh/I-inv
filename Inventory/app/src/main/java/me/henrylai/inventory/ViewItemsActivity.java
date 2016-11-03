@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,10 @@ public class ViewItemsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // cast arraylist to pass to intent extras
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mDBhandler);
         // array of string of items
-        List<String> itemList = getInventoryArrayFromDB(mDBhandler);
+        final List<String> itemList = getInventoryArrayFromDB(mDBhandler);
 
         //setting up adapter for listvirw
         ArrayAdapter<String> itemsAdapter =
@@ -45,7 +48,10 @@ public class ViewItemsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ViewItemsActivity.this, ItemDetailsActivity.class);
-                //based on item add info to intent
+                // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO VIEW ITEM DETAILS
+                intent.putExtra("ItemList", inventory);
+                // ADDS THE SELECTED ITEM TO EXTRAS
+                intent.putExtra("selected", itemList.get(position));
                 startActivity(intent);
             }
 
@@ -70,6 +76,11 @@ public class ViewItemsActivity extends AppCompatActivity {
         for (Item item : allitems) {
             inventory.add(item.getmName());
         }
+        return inventory;
+    }
+
+    private List<Item> getInventoryFromDB(SQLiteDBHandler DBhandler){
+        List<Item> inventory = DBhandler.getAllItems();
         return inventory;
     }
 

@@ -1,10 +1,12 @@
 package me.henrylai.inventory.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Starwater on 11/3/2016.
  */
 
-public class Item {
+public class Item implements Serializable {
 
     /** The id of the item. */
     private int mId;
