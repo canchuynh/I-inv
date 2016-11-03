@@ -50,8 +50,10 @@ public class AddItemActivity extends AppCompatActivity {
 
                 // Move back to viewing inventory after adding an item
                 Intent backToViewInventory = new Intent(AddItemActivity.this, ViewItemsActivity.class);
-                backToViewInventory.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
-                Toast.makeText(AddItemActivity.this, "Item successfully added! (not!)", Toast.LENGTH_SHORT).show();
+                backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                Toast.makeText(AddItemActivity.this, "Item (probably) successfully added! ", Toast.LENGTH_SHORT).show();
                 startActivity(backToViewInventory);
 
             }
