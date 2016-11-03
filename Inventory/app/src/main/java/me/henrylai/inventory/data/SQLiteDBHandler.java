@@ -123,4 +123,17 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(deletedItem.getmId()) });
         db.close();
     }
+
+    // Updating an item
+    public int updateItem(Item updatedItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NAME, updatedItem.getmName());
+        values.put(VALUE, updatedItem.getmValue());
+        values.put(CONDITION, updatedItem.getmCondition());
+        values.put(DESCRIPTION, updatedItem.getmDescription());
+        // updating row
+        return db.update(TABLE_ITEMS, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(updatedItem.getmId())});
+    }
 }
