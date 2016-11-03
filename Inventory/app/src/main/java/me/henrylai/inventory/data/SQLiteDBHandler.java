@@ -106,5 +106,21 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return itemList;
     }
 
+    // Getting item Count
+    public int getItemCount() {
+        String countQuery = "SELECT * FROM " + TABLE_ITEMS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+        // return count
+        return cursor.getCount();
+    }
 
+    // Deleting an item
+    public void deleteItem(Item deletedItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ITEMS, KEY_ID + " = ?",
+                new String[] { String.valueOf(deletedItem.getmId()) });
+        db.close();
+    }
 }
