@@ -11,28 +11,30 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.henrylai.inventory.data.Item;
 import me.henrylai.inventory.data.SQLiteDBHandler;
 
 public class ViewItemsActivity extends AppCompatActivity {
-
+    private SQLiteDBHandler mDBhandler;
     private ListView mItemListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // array of string of items
-        String[] items = {"Oranges", "Batteries", "Apples", "Corn"};
+        List<String> itemList = getInventoryArrayFromDB(mDBhandler);
 
         //setting up adapter for listvirw
         ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 
         // attach listview
         mItemListView = (ListView) findViewById(R.id.items_listview);
@@ -60,6 +62,15 @@ public class ViewItemsActivity extends AppCompatActivity {
 
         //TODO DELETE THIS AND THE METHOD BEFORE ANY SUBMISSIONS
         runTestingCode();
+    }
+
+    private List<String> getInventoryArrayFromDB(SQLiteDBHandler DBhandler){
+        ArrayList<String> inventory = new ArrayList<>();
+        List<Item> allitems = DBhandler.getAllItems();
+        for (Item item : allitems) {
+            inventory.add(item.getmName());
+        }
+        return inventory;
     }
 
     // TODO: TO BE DELETED

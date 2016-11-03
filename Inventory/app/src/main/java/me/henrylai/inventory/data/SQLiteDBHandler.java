@@ -36,7 +36,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + TABLE_ITEMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + NAME + " TEXT NOT NULL,"
+                + NAME + " TEXT NOT NULL UNIQUE,"
                 + VALUE + " REAL,"
                 + CONDITION + " TEXT,"
                 + DESCRIPTION + " TEXT"
