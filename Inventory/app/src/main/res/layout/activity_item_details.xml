@@ -19,14 +19,6 @@
         tools:layout="@layout/fragment_menu" />
 
     <TextView
-        android:text="PLACEHOLDER FOR ITEM DETAILS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
         android:text="NAME OF ITEM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
