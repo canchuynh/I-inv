@@ -55,7 +55,7 @@ public class Item implements Serializable {
         this(0, theName, theValue, theCondition, theDescription);
     }
 
-        public String getmName() {
+    public String getmName() {
         return mName;
     }
 
