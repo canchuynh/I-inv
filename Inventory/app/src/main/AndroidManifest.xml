@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.ViewItemsActivity"
@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AddItemActivity" />
-        <activity android:name=".activities.ItemDetailsActivity"></activity>
+        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.EditItemActivity"></activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private TextView mValueDetail;
     private TextView mConditionDetail;
     private TextView mDescriptionDetail;
+    private Button mEditButton;
     private SQLiteDBHandler mDBhandler;
     private Item selectedItem;
 
@@ -35,7 +37,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mValueDetail = (TextView)findViewById(R.id.details_item_value);
         mConditionDetail = (TextView)findViewById(R.id.details_item_condition);
         mDescriptionDetail = (TextView)findViewById(R.id.details_item_description);
-
+        mEditButton = (Button) findViewById(R.id.details_edit_button);
 
         // GETS THE LIST OF ALL ITEMS
         ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
@@ -55,6 +57,16 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mValueDetail.setText(       "Value: " + selectedItem.getmValue() + "");
         mConditionDetail.setText(   "Condition: " + selectedItem.getmCondition());
         mDescriptionDetail.setText( "Description: " + selectedItem.getmDescription());
+
+        mEditButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemDetailsActivity.this, EditItemActivity.class);
+                intent.putExtra("selectedItem", selectedItem);
+                startActivity(intent);
+            }
+        });
     }
 
     public void deleteItem(View view) {
