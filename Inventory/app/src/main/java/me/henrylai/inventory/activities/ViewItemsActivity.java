@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,12 @@ public class ViewItemsActivity extends AppCompatActivity {
 
         // cast arraylist to pass to intent extras
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mDBhandler);
+
+        //TODO DELETE THIS AND THE METHOD BEFORE ANY SUBMISSIONS
+        if(inventory.isEmpty()) {
+            runTestingCode();
+        }
+
         // array of string of items
         final List<String> itemList = getInventoryArrayFromDB(mDBhandler);
 
@@ -67,8 +74,7 @@ public class ViewItemsActivity extends AppCompatActivity {
             }
         });
 
-        //TODO DELETE THIS AND THE METHOD BEFORE ANY SUBMISSIONS
-        //runTestingCode();
+
     }
 
     private List<String> getInventoryArrayFromDB(SQLiteDBHandler DBhandler){
@@ -86,26 +92,25 @@ public class ViewItemsActivity extends AppCompatActivity {
     }
 
     // TODO: TO BE DELETED
-//    private void runTestingCode() {
-//        SQLiteDBHandler db = new SQLiteDBHandler(this);
-//
-//        // Inserting Items/Rows
-//        Log.d("Insert: ", "Inserting ..");
-//        db.addItem(new Item("Dockers", 3.52,null,null));
-//        db.addItem(new Item("Dunkin Donuts", 4.51, "good condition", "a healthy donut description"));
-//        db.addItem(new Item("Pizza Porlar",5.5,null,null));
-//        db.addItem(new Item("Computer",7.8,null,null));
-//
-//        // Reading all items
-//        Log.d("Reading: ", "Reading all items..");
-//        List<Item> allitems = db.getAllItems();
-//
-//        for (Item item : allitems) {
-//            String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
-//                    + item.getmValue() + ", Condition: " + item.getmCondition() + ", Description: " + item.getmDescription();
-//            // Writing items to log
-//            Log.d("Items: : ", log);
-//
-//        }
-//    }
+    private void runTestingCode() {
+        SQLiteDBHandler db = new SQLiteDBHandler(this);
+
+        // Inserting Items/Rows
+        Log.d("Insert: ", "Inserting ..");
+        db.addItem(new Item("Apples", 1.52, "Fresh", "A basket of yummy apples. Restores 12hp when consumed."));
+        db.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
+        db.addItem(new Item("Hardcore Corno", 69.69, "Brand New", "The hardest of all cornography."));
+
+        // Reading all items
+        Log.d("Reading: ", "Reading all items..");
+        List<Item> allitems = db.getAllItems();
+
+        for (Item item : allitems) {
+            String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
+                    + item.getmValue() + ", Condition: " + item.getmCondition() + ", Description: " + item.getmDescription();
+            // Writing items to log
+            Log.d("Items: : ", log);
+
+        }
+    }
 }
