@@ -1,21 +1,19 @@
-package me.henrylai.inventory;
+package me.henrylai.inventory.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import me.henrylai.inventory.R;
 import me.henrylai.inventory.data.Item;
 import me.henrylai.inventory.data.SQLiteDBHandler;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 public class ItemDetailsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package me.henrylai.inventory;
+package me.henrylai.inventory.fragments;
 
 
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import me.henrylai.inventory.R;
 
 
 /**
