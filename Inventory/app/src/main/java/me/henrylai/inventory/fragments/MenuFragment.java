@@ -29,7 +29,7 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        // setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
 
