@@ -1,4 +1,4 @@
-package me.henrylai.inventory;
+package edu.team6.inventory;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

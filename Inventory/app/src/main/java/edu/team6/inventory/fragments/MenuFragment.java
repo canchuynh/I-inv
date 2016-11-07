@@ -1,4 +1,4 @@
-package me.henrylai.inventory.fragments;
+package edu.team6.inventory.fragments;
 
 
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.henrylai.inventory.R;
+import edu.team6.inventory.R;
 
 
 /**

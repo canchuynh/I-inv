@@ -1,4 +1,4 @@
-package me.henrylai.inventory;
+package edu.team6.inventory;
 
 import org.junit.Test;
 

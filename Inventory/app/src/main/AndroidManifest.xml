@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.henrylai.inventory">
+    package="edu.team6.inventory">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -14,19 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity
-            android:name=".activities.ViewItemsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.LoginActivity">
+
+        </activity>
+        <activity android:name=".activities.ViewItemsActivity"></activity>
+        <activity android:name=".activities.AddItemActivity" />
+        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.EditItemActivity" />
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AddItemActivity" />
-        <activity android:name=".activities.ItemDetailsActivity" />
-        <activity android:name=".activities.EditItemActivity"></activity>
     </application>
 
 </manifest>

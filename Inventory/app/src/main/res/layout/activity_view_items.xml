@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="me.henrylai.inventory.activities.ViewItemsActivity">
+    tools:context="edu.team6.inventory.activities.ViewItemsActivity">
 
     <fragment
-        android:name="me.henrylai.inventory.fragments.MenuFragment"
+        android:name="edu.team6.inventory.fragments.MenuFragment"
         android:id="@+id/menu_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

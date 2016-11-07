@@ -1,4 +1,4 @@
-package me.henrylai.inventory.data;
+package edu.team6.inventory.data;
 
 /**
  * Created by Starwater on 11/3/2016.

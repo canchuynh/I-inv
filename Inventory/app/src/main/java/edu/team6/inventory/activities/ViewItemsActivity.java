@@ -1,4 +1,4 @@
-package me.henrylai.inventory.activities;
+package edu.team6.inventory.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.henrylai.inventory.R;
-import me.henrylai.inventory.data.Item;
-import me.henrylai.inventory.data.SQLiteDBHandler;
+import edu.team6.inventory.R;
+import edu.team6.inventory.data.Item;
+import edu.team6.inventory.data.SQLiteDBHandler;
 
 public class ViewItemsActivity extends AppCompatActivity {
     private SQLiteDBHandler mDBhandler;
@@ -28,7 +28,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         // cast arraylist to pass to intent extras
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mDBhandler);

@@ -1,4 +1,4 @@
-package me.henrylai.inventory.activities;
+package edu.team6.inventory.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import me.henrylai.inventory.R;
-import me.henrylai.inventory.data.Item;
-import me.henrylai.inventory.data.SQLiteDBHandler;
+import edu.team6.inventory.R;
+import edu.team6.inventory.data.Item;
+import edu.team6.inventory.data.SQLiteDBHandler;
 
 public class AddItemActivity extends AppCompatActivity {
 
