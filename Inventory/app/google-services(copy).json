@@ -13,14 +13,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "268057385445-kkbn93n2l180putmloe2e6144deepico.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "edu.team6.inventory",
-            "certificate_hash": "526EFB73F512B2629593C471A616A50BA4FBAF1E"
-          }
-        },
-        {
           "client_id": "268057385445-uhckrloo9p2hk6i27ntl16dp703n82d9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

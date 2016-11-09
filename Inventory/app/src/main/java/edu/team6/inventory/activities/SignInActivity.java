@@ -121,8 +121,7 @@ public class SignInActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
 //            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
 //            updateUI(true);
-            Toast toast = Toast.makeText(getApplicationContext(), acct.toString(), Toast.LENGTH_LONG);
-            toast.show();
+            Toast.makeText(getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ViewItemsActivity.class);
             startActivity(intent);
             finish();
