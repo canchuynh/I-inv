@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +26,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
         // cast arraylist to pass to intent extras
