@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity">
-
-        </activity>
         <activity android:name=".activities.ViewItemsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +24,6 @@
         <activity android:name=".activities.AddItemActivity" />
         <activity android:name=".activities.ItemDetailsActivity" />
         <activity android:name=".activities.EditItemActivity" />
-        <activity android:name=".activities.SignInActivity">
-        </activity>
     </application>
 
 </manifest>
