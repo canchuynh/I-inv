@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
     <item
+        android:id="@+id/export"
+        android:title="@string/export"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/logout"
         android:title="@string/logout"
         app:showAsAction="never" />

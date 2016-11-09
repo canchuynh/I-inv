@@ -32,5 +32,6 @@
     </string>
 
     <string name="logout">Logout</string>
+    <string name="export">Export</string>
 
 </resources>
