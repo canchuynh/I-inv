@@ -40,7 +40,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mEditButton = (Button) findViewById(R.id.details_edit_button);
 
         // GETS THE LIST OF ALL ITEMS
-        ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
+        final ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
         String selectedItemName = getIntent().getStringExtra("selected");
         selectedItem = new Item();
         // Find the selected item from the list of items!
@@ -63,6 +63,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ItemDetailsActivity.this, EditItemActivity.class);
+                intent.putExtra("ItemList", itemList);
                 intent.putExtra("selectedItem", selectedItem);
                 startActivity(intent);
             }

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
@@ -21,11 +23,15 @@ public class EditItemActivity extends AppCompatActivity {
     private Button mSaveEditsButton;
     private SQLiteDBHandler mDBhandler;
     private Item theEditItem;
+    private ArrayList<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
+
+        // Grabs list of items from bundle
+        itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
 
         // Connects all UI elements
         mNameField = (EditText) findViewById(R.id.edit_name_field);
@@ -49,13 +55,10 @@ public class EditItemActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (true) { // Call input validation method here later
+                if (validateInput()) { // Call input validation method here later
 
                     // sets the fields to be updated for the item being edited
-                    theEditItem.setmName(mNameField.getText().toString());
-                    theEditItem.setmValue(Double.parseDouble(mValueField.getText().toString()));
-                    theEditItem.setmCondition(mConditionField.getText().toString());
-                    theEditItem.setmDescription(mDescriptionField.getText().toString());
+                    updateItem();
 
                     // Updates the SQLite DB with the updated item
                     mDBhandler.updateItem(theEditItem);
@@ -71,5 +74,25 @@ public class EditItemActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateItem() {
+        theEditItem.setmName(mNameField.getText().toString());
+        theEditItem.setmValue(
+                (mValueField.getText().toString().equals("")) ? 0 : Double.parseDouble(mValueField.getText().toString()));
+        theEditItem.setmCondition(mConditionField.getText().toString());
+        theEditItem.setmDescription(mDescriptionField.getText().toString());
+    }
+
+    private boolean validateInput() {
+        boolean validity = true;
+        // Check for duplicate item names in inventory
+        for (Item item : itemList) {
+            if (item.getmName().equals(mNameField.getText().toString()) && !item.getmName().equals(theEditItem.getmName())) {
+                validity = false;
+                Toast.makeText(EditItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return validity;
     }
 }
