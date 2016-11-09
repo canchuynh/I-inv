@@ -32,7 +32,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         // cast arraylist to pass to intent extras
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mDBhandler);
 
-        //TODO DELETE THIS AND THE METHOD BEFORE ANY SUBMISSIONS
+        // Create placeholder/test items
         if(inventory.isEmpty()) {
             runTestingCode();
         }
@@ -90,7 +90,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         return inventory;
     }
 
-    // TODO: TO BE DELETED
+    //Creates initial placeholder items
     private void runTestingCode() {
         SQLiteDBHandler db = new SQLiteDBHandler(this);
 
@@ -98,7 +98,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         Log.d("Insert: ", "Inserting ..");
         db.addItem(new Item("Apples", 1.52, "Fresh", "A basket of yummy apples. Restores 12hp when consumed."));
         db.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
-        db.addItem(new Item("Hardcore Corno", 69.69, "Brand New", "The hardest of all cornography."));
+        db.addItem(new Item("Galaxy Note 7", 699.99, "Brand New", "Comes with a free explosion after only 15 minutes of use!"));
 
         // Reading all items
         Log.d("Reading: ", "Reading all items..");
