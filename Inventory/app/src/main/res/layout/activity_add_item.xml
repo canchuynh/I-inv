@@ -41,7 +41,7 @@
         android:layout_below="@+id/item_name_field"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Value (bug: required or crash)"
+        android:hint="Value (default is 0 if left blank)"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
