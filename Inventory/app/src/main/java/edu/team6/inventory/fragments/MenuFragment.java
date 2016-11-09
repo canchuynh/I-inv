@@ -1,8 +1,8 @@
 package edu.team6.inventory.fragments;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +19,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.List;
+
 import edu.team6.inventory.R;
+import edu.team6.inventory.data.Item;
+import edu.team6.inventory.data.SQLiteDBHandler;
 
 
 /**
@@ -27,6 +37,9 @@ import edu.team6.inventory.R;
  */
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
+
+    private final static String EXPORT_URL
+            = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/addItem.php?";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -66,6 +79,9 @@ public class MenuFragment extends Fragment implements
             case R.id.logout:
                 signOut();
                 return true;
+            case R.id.export:
+                export();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -84,9 +100,124 @@ public class MenuFragment extends Fragment implements
                 });
     }
 
+    /**
+     * Export SQLite database to a web server. Web server must be defined and running.
+     */
+    private void export() {
+        SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
+        List<Item> inventory = dbHandler.getAllItems();
+
+        for (Item i : inventory) {
+            new AddItemTask().execute(new String[]{buildCourseURL(i).toString()});
+        }
+    }
+
+    /**
+     * Builds URL for web service.
+     *
+     * @param item Item to be converted to URL for web service.
+     */
+    private String buildCourseURL(Item item) {
+
+        StringBuilder sb = new StringBuilder(EXPORT_URL);
+
+        try {
+
+            sb.append("id=");
+            sb.append(item.getmId());
+
+            sb.append("&name=");
+            sb.append(URLEncoder.encode(item.getmName(), "UTF-8"));
+
+            sb.append("&value=");
+            sb.append(item.getmValue());
+
+            sb.append("&condition=");
+            sb.append(URLEncoder.encode(item.getmCondition(), "UTF-8"));
+
+            sb.append("&description=");
+            sb.append(URLEncoder.encode(item.getmDescription(), "UTF-8"));
+
+        }
+        catch(Exception e) {
+            Toast.makeText(this.getView().getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
+    }
+
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
     }
+
+
+    private class AddItemTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to export, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+//            try {
+//                JSONObject jsonObject = new JSONObject(result);
+//                String status = (String) jsonObject.get("result");
+//                if (status.equals("success")) {
+//                    Toast.makeText(this.getClass()getApplicationContext(), "Course successfully added!"
+//                            , Toast.LENGTH_LONG)
+//                            .show();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Failed to add: "
+//                                    + jsonObject.get("error")
+//                            , Toast.LENGTH_LONG)
+//                            .show();
+//                }
+//            } catch (JSONException e) {
+//                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
+//                        e.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+        }
+    }
+
 }
