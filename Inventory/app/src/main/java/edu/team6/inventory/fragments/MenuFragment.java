@@ -1,9 +1,11 @@
 package edu.team6.inventory.fragments;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -28,6 +32,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import edu.team6.inventory.R;
+import edu.team6.inventory.activities.ViewItemsActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -38,10 +43,12 @@ import edu.team6.inventory.data.SQLiteDBHandler;
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int RC_SIGN_IN = 9001;
     private final static String EXPORT_URL
             = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/addItem.php?";
 
     private GoogleApiClient mGoogleApiClient;
+
 
     public MenuFragment() {
         // Required empty public constructor
@@ -76,6 +83,9 @@ public class MenuFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.signIn:
+                signIn();
+                return true;
             case R.id.logout:
                 signOut();
                 return true;
@@ -85,6 +95,12 @@ public class MenuFragment extends Fragment implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // [START signIn]
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void signOut() {
@@ -98,6 +114,28 @@ public class MenuFragment extends Fragment implements
                         Toast.makeText(getActivity().getApplicationContext(), "Logged out!", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(this.getActivity().getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
+        } else {
+            // Signed out
+            Toast.makeText(this.getActivity().getApplicationContext(), "Signed Out", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

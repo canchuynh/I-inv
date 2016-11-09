@@ -33,6 +33,6 @@
 
     <string name="logout">Logout</string>
     <string name="export">Export</string>
-    <string name="signin">Sign In</string>
+    <string name="signIn">Sign In</string>
 
 </resources>

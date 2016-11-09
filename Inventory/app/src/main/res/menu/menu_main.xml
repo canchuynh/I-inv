@@ -9,8 +9,8 @@
         android:title="@string/export"
         app:showAsAction="never" />
     <item
-        android:id="@+id/signin"
-        android:title="@string/signin"
+        android:id="@+id/signIn"
+        android:title="@string/signIn"
         app:showAsAction="never" />
     <item
         android:id="@+id/logout"
