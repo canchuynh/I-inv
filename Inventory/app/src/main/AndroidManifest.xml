@@ -17,16 +17,16 @@
         <activity android:name=".activities.LoginActivity">
 
         </activity>
-        <activity android:name=".activities.ViewItemsActivity"></activity>
-        <activity android:name=".activities.AddItemActivity" />
-        <activity android:name=".activities.ItemDetailsActivity" />
-        <activity android:name=".activities.EditItemActivity" />
-        <activity android:name=".activities.SignInActivity">
+        <activity android:name=".activities.ViewItemsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter></activity>
+        <activity android:name=".activities.AddItemActivity" />
+        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.EditItemActivity" />
+        <activity android:name=".activities.SignInActivity">
         </activity>
     </application>
 

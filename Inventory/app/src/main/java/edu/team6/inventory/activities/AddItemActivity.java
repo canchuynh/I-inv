@@ -42,9 +42,11 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateFields()) {
+                    // Check value of item, prevent numberformatexception when trying to parsedouble if empty.
+                    Double itemValue = (mValueField.getText().toString().equals("")) ? 0 : Double.parseDouble(mValueField.getText().toString());
                     // Create an item to add
                     Item newItem = new Item(mNameField.getText().toString(),
-                            Double.parseDouble(mValueField.getText().toString()),
+                            itemValue,
                             mConditionField.getText().toString(), mDescriptionField.getText().toString());
 
                     // Add item to local SQLite DB
