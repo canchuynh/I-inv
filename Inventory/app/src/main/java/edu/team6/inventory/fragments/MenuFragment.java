@@ -38,18 +38,22 @@ import edu.team6.inventory.data.SQLiteDBHandler;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment that handles the menu and its options.
  */
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
+    /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
+
+    /** URL for adding items to SQL server. */
     private final static String EXPORT_URL
             = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/addItem.php?";
 
+    /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
 
-
+    /** Required empty public constructor. */
     public MenuFragment() {
         // Required empty public constructor
     }
@@ -69,6 +73,7 @@ public class MenuFragment extends Fragment implements
                 .enableAutoManage(this.getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
 
@@ -97,21 +102,27 @@ public class MenuFragment extends Fragment implements
         }
     }
 
-    // [START signIn]
+    /**
+     * Signs use in with Google Sign In.
+     */
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /**
+     * Signs user out from Google.
+     */
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        // [START_EXCLUDE]
-//                        updateUI(false);
-                        // [END_EXCLUDE]
-                        Toast.makeText(getActivity().getApplicationContext(), "Logged out!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                "Logged out!",
+                                Toast.LENGTH_LONG)
+                                .show();
                     }
                 });
     }
@@ -127,14 +138,22 @@ public class MenuFragment extends Fragment implements
         }
     }
 
+    /**
+     * Handles the results (Success/Failure) of singing in.
+     *
+     * @param result Result of signing in.
+     */
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(this.getActivity().getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
         } else {
-            // Signed out
-            Toast.makeText(this.getActivity().getApplicationContext(), "Signed Out", Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                    this.getActivity().getApplicationContext(),
+                    "Sign in failed.",
+                    Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -145,6 +164,7 @@ public class MenuFragment extends Fragment implements
         SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
         List<Item> inventory = dbHandler.getAllItems();
 
+        // Export all items. One at a time.
         for (Item i : inventory) {
             new AddItemTask().execute(new String[]{buildCourseURL(i).toString()});
         }
@@ -152,15 +172,14 @@ public class MenuFragment extends Fragment implements
 
     /**
      * Builds URL for web service.
-     *
      * @param item Item to be converted to URL for web service.
+     * @return URL string for web service.
      */
     private String buildCourseURL(Item item) {
 
         StringBuilder sb = new StringBuilder(EXPORT_URL);
 
         try {
-
             sb.append("id=");
             sb.append(item.getmId());
 
@@ -175,10 +194,11 @@ public class MenuFragment extends Fragment implements
 
             sb.append("&description=");
             sb.append(URLEncoder.encode(item.getmDescription(), "UTF-8"));
-
-        }
-        catch(Exception e) {
-            Toast.makeText(this.getView().getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+        } catch(Exception e) {
+            Toast.makeText(
+                    this.getView().getContext(),
+                    "Something wrong with the url" + e.getMessage(),
+                    Toast.LENGTH_LONG)
                     .show();
         }
         return sb.toString();
@@ -187,11 +207,18 @@ public class MenuFragment extends Fragment implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not be available.
+        Toast.makeText(
+                this.getView().getContext(),
+                "Unable to establish connection." ,
+                Toast.LENGTH_LONG)
+                .show();
     }
 
 
+    /**
+     * AsyncTask class for adding items to web server.
+     */
     private class AddItemTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -226,15 +253,7 @@ public class MenuFragment extends Fragment implements
             }
             return response;
         }
-
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
+        
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
