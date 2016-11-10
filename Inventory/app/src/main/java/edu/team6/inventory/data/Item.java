@@ -138,4 +138,8 @@ public class Item implements Serializable {
         return mId;
     }
 
+    /** Gets the item id. */
+    public void setmId(int ID) {
+        this.mId = ID;
+    }
 }

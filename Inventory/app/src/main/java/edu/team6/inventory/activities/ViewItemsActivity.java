@@ -48,7 +48,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         // array of string of items
         final List<String> itemList = getInventoryItemNamesFromDB();
 
-        // setting up adapter for listview
+        // setting up adapter for listviewu
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 

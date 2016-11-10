@@ -25,26 +25,33 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
     /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
-    private int mItemID;
+    /** The selected Item to display details of. */
     private Item selectedItem;
+    /** The TextView to display the item name. */
     private TextView mNameDetail;
+    /** The TextView to display the item value. */
     private TextView mValueDetail;
+    /** The TextView to display the item condition. */
     private TextView mConditionDetail;
+    /** The TextView to display the item's description. */
     private TextView mDescriptionDetail;
+    /** The Button to edit this item's properties. */
     private Button mEditButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
-
         mDBhandler = new SQLiteDBHandler(this);
+
+        // Connecting UI components
         mNameDetail = (TextView)findViewById(R.id.details_item_name);
         mValueDetail = (TextView)findViewById(R.id.details_item_value);
         mConditionDetail = (TextView)findViewById(R.id.details_item_condition);
         mDescriptionDetail = (TextView)findViewById(R.id.details_item_description);
         mEditButton = (Button) findViewById(R.id.details_edit_button);
 
-        // GETS THE LIST OF ALL ITEMS
+        // Gets the list of all items
         final ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
         String selectedItemName = getIntent().getStringExtra("selected");
         selectedItem = new Item();
@@ -53,7 +60,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
             if (item.getmName().equals(selectedItemName)) {
                 // found, assign the item as selectedItem.
                 selectedItem = item;
-                mItemID = item.getmId();
             }
         }
 
