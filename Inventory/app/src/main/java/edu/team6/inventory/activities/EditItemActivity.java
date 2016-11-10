@@ -14,16 +14,28 @@ import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
+/**
+ * This class handles the adding of items to the inventory, as well as
+ * the validation of inputs for item properties when an item is added.
+ */
 public class EditItemActivity extends AppCompatActivity {
 
-    private EditText mNameField;
-    private EditText mValueField;
-    private EditText mConditionField;
-    private EditText mDescriptionField;
-    private Button mSaveEditsButton;
-    private SQLiteDBHandler mDBhandler;
-    private Item theEditItem;
+    /** An ArrayList of all items in the inventory.. */
     private ArrayList<Item> itemList;
+    /** The EditText field for item name editing input. */
+    private EditText mNameField;
+    /** The EditText field for item value editing input. */
+    private EditText mValueField;
+    /** The EditText field for item condition editing input. */
+    private EditText mConditionField;
+    /** The EditText field for item description editing input. */
+    private EditText mDescriptionField;
+    /** The button used to save item edits to the inventory. */
+    private Button mSaveEditsButton;
+    /** The SQLite DB handler used to store items in the inventory. */
+    private SQLiteDBHandler mDBhandler;
+    /** The item being edited. */
+    private Item theEditItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +88,9 @@ public class EditItemActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Updates an item with the currently given input.
+     */
     private void updateItem() {
         theEditItem.setmName(mNameField.getText().toString());
         theEditItem.setmValue(
@@ -84,6 +99,10 @@ public class EditItemActivity extends AppCompatActivity {
         theEditItem.setmDescription(mDescriptionField.getText().toString());
     }
 
+    /**
+     * Validates all the input and returns the validity.
+     * @return True if all given input is valid, false otherwise.
+     */
     private boolean validateInput() {
         boolean validity = true;
         // Check for duplicate item names in inventory
