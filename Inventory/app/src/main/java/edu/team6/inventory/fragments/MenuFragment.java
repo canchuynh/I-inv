@@ -46,6 +46,10 @@ public class MenuFragment extends Fragment implements
     /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
 
+    /** URL for Dropping the table. */
+    private final static String DROP_URL
+            = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/dropTable.php";
+
     /** URL for adding items to SQL server. */
     private final static String EXPORT_URL
             = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/addItem.php?";
@@ -161,7 +165,12 @@ public class MenuFragment extends Fragment implements
      * Export SQLite database to a web server. Web server must be defined and running.
      */
     private void export() {
+
+        // Drops table before exporting.
+        new AddItemTask().execute(new String[]{DROP_URL.toString()});
+
         SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
+
         List<Item> inventory = dbHandler.getAllItems();
 
         // Export all items. One at a time.
