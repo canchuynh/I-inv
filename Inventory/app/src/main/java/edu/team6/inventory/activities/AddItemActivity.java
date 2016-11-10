@@ -14,33 +14,47 @@ import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
+/**
+ * This class handles the adding of items to the inventory, as well as
+ * the validation of inputs for item properties when an item is added.
+ */
 public class AddItemActivity extends AppCompatActivity {
 
-    private Button mAddItemButton;
-    private EditText mNameField;
-    private EditText mValueField;
-    private EditText mConditionField;
-    private EditText mDescriptionField;
+    /** An ArrayList of all items in the inventory.. */
     private ArrayList<Item> itemList;
+    /** The EditText field for item name input. */
+    private EditText mNameField;
+    /** The EditText field for item value input. */
+    private EditText mValueField;
+    /** The EditText field for item condition input. */
+    private EditText mConditionField;
+    /** The EditText field for item description input. */
+    private EditText mDescriptionField;
+    /** The button used to add an item to the inventory. */
+    private Button mAddItemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        final SQLiteDBHandler DBhandler = new SQLiteDBHandler(this);
-        itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
-
+        // Connecting UI components
         mAddItemButton = (Button) findViewById(R.id.item_add_button);
         mNameField = (EditText) findViewById(R.id.item_name_field);
         mValueField = (EditText) findViewById(R.id.item_value_field);
         mConditionField = (EditText) findViewById(R.id.item_condition_field);
         mDescriptionField = (EditText) findViewById(R.id.item_description_field);
 
+        // Creates the database handler
+        final SQLiteDBHandler DBhandler = new SQLiteDBHandler(this);
+        // Gets the inventory from extras
+        itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
+
+        // Defining and setting the "Add Item" button's onclick
         mAddItemButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // Anonymous OnClickListener class
                 if (validateFields()) {
                     // Check value of item, prevent numberformatexception when trying to parsedouble if empty.
                     Double itemValue = (mValueField.getText().toString().equals("")) ? 0 : Double.parseDouble(mValueField.getText().toString());
@@ -65,6 +79,10 @@ public class AddItemActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates all the input and returns the validity.
+     * @return True if all given input is valid, false otherwise.
+     */
     private boolean validateFields() {
         boolean result = true;
         for (Item item : itemList) {
