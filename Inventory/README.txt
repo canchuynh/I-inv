@@ -1,6 +1,6 @@
 Features
 	Web service
-	*	Uses web service to export SQLite database, import is not implemented.
+	*	Uses web service to export SQLite database, import is not yet implemented.
 	*	To export: Menu (triple dots) > Export
 	*	To view SQL webserver go to: http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/list.php?cmd=inventory
 	
@@ -13,16 +13,17 @@ Features
 	*	To sign out: Menu (triple dots) > Sign Out
 	
 	One other feature: SQLite Database
-	*	Use SQLite Database to store, view, update, and remove items into inventory. Stores ID (Primary key, hidden), Name, Value, Condition, and Description.
-	*	To store new item: Add FAB > enter information > Add Item
+	*	Use SQLite Database to store, view, update, and remove items into inventory. 
+	*	Stores ID (Primary key, hidden), Name, Value, Condition, and Description.
+	*	To store new item: Add FAB > enter (valid) information > Add Item
 	*	To view item: Click on any item on list.
-	*	To update item: View item (see above) > Edit Item Details
-	*	To remove item: View item (see above) > Delete This Item > OK
+	*	To update item: View an item (see above) > Edit Item Details > enter updated information > SAVE CHANGES
+	*	To remove item: View an item (see above) > Delete This Item > OK
 
 Notes:
 Export to SQL server is not tied to any account (all users of the app share it).
 	SQL server's table is dropped before every export for phase 1 for reasons state above.
-Search is not functional.
+Search is not yet implemented
 More fields will be added to each item later.
 
 
