@@ -1,14 +1,7 @@
 # I-inv
 
-TODO:
-Week 4
-  Use Case 1: Login - Henry
-  Use Case 2: Adding an Item - Henry
-  Use Case 3: Search Inventory - Henry
-  Use Case 4: View Details of an Item - Henry
-  Use Case 5: Edit Item- Can
-  Use Case 6: Delete Item - Can
-  Use Case 7: Share Item - 
-  Use Case 8: Export - 
-  Use Case 9: Import - 
-  Use Case 10: Logout - Can
+Need SHA-1 from Java to use google sign in.
+To get SHA-1 go to ProgramFiles/Java/jre/bin
+Enter:
+keytool -exportcert -list -v -alias androiddebugkey -keystore <path to .android>\.android\debug.keystore 
+Send Can the SHA-1.

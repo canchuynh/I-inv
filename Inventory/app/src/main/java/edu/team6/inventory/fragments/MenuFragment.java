@@ -253,7 +253,7 @@ public class MenuFragment extends Fragment implements
             }
             return response;
         }
-        
+
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.

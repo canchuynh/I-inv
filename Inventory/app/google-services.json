@@ -13,7 +13,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "268057385445-kkbn93n2l180putmloe2e6144deepico.apps.googleusercontent.com",
+          "client_id": "268057385445-r56rfasaktheb9jse6b477or2qto0co0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.team6.inventory",
+            "certificate_hash": "A4A8ADA345038379112507AF0C4C98531780225B"
+          }
+        },
+        {
+          "client_id": "268057385445-91k759co6r6ev0vnkgietvu27tub835e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "edu.team6.inventory",
