@@ -30,11 +30,8 @@ More fields will be added to each item later.
 Use Cases Implemented
 	Use Case 1: Login
 	Use Case 2: Add an Item
-
 	Use Case 4: View Details of an Item
 	Use Case 5: Edit an item
 	Use Case 6: Delete an item
-	
 	Use Case 8: Export Inventory
-
 	Use Case 10: Logout
