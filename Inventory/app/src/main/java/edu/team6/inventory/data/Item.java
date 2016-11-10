@@ -139,7 +139,7 @@ public class Item implements Serializable {
     }
 
     /** Gets the item id. */
-    public void setmId(int ID) {
+    protected void setmId(int ID) {
         this.mId = ID;
     }
 }
