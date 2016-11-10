@@ -151,7 +151,11 @@ public class MenuFragment extends Fragment implements
         if (result.isSuccess()) {
             // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this.getActivity().getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                    this.getActivity().getApplicationContext(),
+                    "Welcome " + acct.getDisplayName() + "!",
+                    Toast.LENGTH_LONG)
+                    .show();
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
@@ -177,6 +181,12 @@ public class MenuFragment extends Fragment implements
         for (Item i : inventory) {
             new AddItemTask().execute(new String[]{buildCourseURL(i).toString()});
         }
+
+        Toast.makeText(
+                this.getActivity().getApplicationContext(),
+                "Inventory Exported!",
+                Toast.LENGTH_LONG)
+                .show();
     }
 
     /**
