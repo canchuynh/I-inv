@@ -37,13 +37,13 @@ public class ViewItemsActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        // cast arraylist to pass to intent extras
-        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
-
         // Create placeholder/test items
-        if(inventory.isEmpty()) {
+        if(getInventoryFromDB().isEmpty()) {
             runTestingCode();
         }
+
+        // cast arraylist to pass to intent extras
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
 
         // array of string of items
         final List<String> itemList = getInventoryItemNamesFromDB();
@@ -110,17 +110,16 @@ public class ViewItemsActivity extends AppCompatActivity {
      * Creates initial placeholder items
      */
     private void runTestingCode() {
-        SQLiteDBHandler db = new SQLiteDBHandler(this);
 
         // Inserting Items/Rows
         Log.d("Insert: ", "Inserting ..");
-        db.addItem(new Item("Apples", 1.52, "Fresh", "A basket of yummy apples. Restores 12hp when consumed."));
-        db.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
-        db.addItem(new Item("Galaxy Note 7", 699.99, "Brand New", "Comes with a free explosion after only 15 minutes of use!"));
+        mDBhandler.addItem(new Item("Apples", 1.52, "Fresh", "A basket of yummy apples. Restores 12hp when consumed."));
+        mDBhandler.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
+        mDBhandler.addItem(new Item("Galaxy Note 7", 699.99, "Brand New", "Comes with a free explosion after only 15 minutes of use!"));
 
         // Reading all items
         Log.d("Reading: ", "Reading all items..");
-        List<Item> allitems = db.getAllItems();
+        List<Item> allitems = mDBhandler.getAllItems();
 
         for (Item item : allitems) {
             String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
