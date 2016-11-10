@@ -17,8 +17,16 @@ import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
+/**
+ * This activity class displays the users inventory which is obtained from the local
+ * SQLite database. From this activity a user able to add a new item as well as view the details
+ * of a previously added item.
+ */
 public class ViewItemsActivity extends AppCompatActivity {
+
+    /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
+    /** The ListView which displays the inventory. */
     private ListView mItemListView;
 
     @Override
@@ -26,11 +34,11 @@ public class ViewItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         // cast arraylist to pass to intent extras
-        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mDBhandler);
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
 
         // Create placeholder/test items
         if(inventory.isEmpty()) {
@@ -38,9 +46,9 @@ public class ViewItemsActivity extends AppCompatActivity {
         }
 
         // array of string of items
-        final List<String> itemList = getInventoryArrayFromDB(mDBhandler);
+        final List<String> itemList = getInventoryItemNamesFromDB();
 
-        //setting up adapter for listvirw
+        // setting up adapter for listview
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 
@@ -76,21 +84,31 @@ public class ViewItemsActivity extends AppCompatActivity {
 
     }
 
-    private List<String> getInventoryArrayFromDB(SQLiteDBHandler DBhandler){
+    /**
+     * Gets a list of the names of all the items in the inventory.
+     * @return A list of strings of every item's name in the inventory.
+     */
+    private List<String> getInventoryItemNamesFromDB(){
         ArrayList<String> inventory = new ArrayList<>();
-        List<Item> allitems = DBhandler.getAllItems();
+        List<Item> allitems = mDBhandler.getAllItems();
         for (Item item : allitems) {
             inventory.add(item.getmName());
         }
         return inventory;
     }
 
-    private List<Item> getInventoryFromDB(SQLiteDBHandler DBhandler){
-        List<Item> inventory = DBhandler.getAllItems();
+    /**
+     * Gets a list of all items in the inventory.
+     * @return A list of Item objects of every item in the inventory.
+     */
+    private List<Item> getInventoryFromDB(){
+        List<Item> inventory = mDBhandler.getAllItems();
         return inventory;
     }
 
-    //Creates initial placeholder items
+    /**
+     * Creates initial placeholder items
+     */
     private void runTestingCode() {
         SQLiteDBHandler db = new SQLiteDBHandler(this);
 

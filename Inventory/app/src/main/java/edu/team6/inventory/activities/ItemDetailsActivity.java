@@ -16,17 +16,22 @@ import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
+/**
+ * This activity class displays all details or properties of a given item, including things like
+ * name, value, condition, description, etc. as well as a button to enable the editing of these
+ * properties and details.
+ */
 public class ItemDetailsActivity extends AppCompatActivity {
 
+    /** The SQLite DB handler used to store items in the inventory. */
+    private SQLiteDBHandler mDBhandler;
     private int mItemID;
+    private Item selectedItem;
     private TextView mNameDetail;
     private TextView mValueDetail;
     private TextView mConditionDetail;
     private TextView mDescriptionDetail;
     private Button mEditButton;
-    private SQLiteDBHandler mDBhandler;
-    private Item selectedItem;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mConditionDetail.setText(   "Condition: " + selectedItem.getmCondition());
         mDescriptionDetail.setText( "Description: " + selectedItem.getmDescription());
 
+        // Sets edit button's onclick to move to editing that item.
         mEditButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -70,14 +76,21 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Deletes this item from the inventory.
+     * @param view
+     */
     public void deleteItem(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete entry")
                 .setMessage("Are you sure you want to delete this entry?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        // Delete the item
                         mDBhandler.deleteItem(selectedItem);
+                        // Make a toast to provide feedback to user
                         Toast.makeText(ItemDetailsActivity.this, "Item deleted! ", Toast.LENGTH_SHORT).show();
+                        // Go back to viewing inventory
                         Intent intent = new Intent(ItemDetailsActivity.this, ViewItemsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |

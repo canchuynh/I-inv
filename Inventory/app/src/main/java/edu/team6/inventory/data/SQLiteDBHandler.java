@@ -1,9 +1,5 @@
 package edu.team6.inventory.data;
 
-/**
- * Created by Starwater on 11/3/2016.
- */
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,21 +9,31 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class handles all the SQLite actions performed by the Inventory application.
+ * This handler provides the ability to add, view, edit, and delete items to/from the inventory.
+ */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
 
-    // Database Version
+    /** The database version. */
     private static final int DATABASE_VERSION = 10;
-    // Database Name
+    /** The database name. */
     private static final String DATABASE_NAME = "Inventory";
-    // Inventory table name
+    /** The name of the table to store items. */
     private static final String TABLE_ITEMS = "items";
-    // Items Table Columns names
+
+    // BEGIN COLUMN NAME DEFINITIONS FOR THE TABLE items
     private static final String KEY_ID = "id";
     private static final String NAME = "name";
     private static final String VALUE = "value";
     private static final String CONDITION = "condition";
     private static final String DESCRIPTION = "description";
+    // END OF COLUMN NAME DEFINITIONS
 
+    /**
+     * Creates a SQLiteDBHandler.
+     * @param context The context where this handler is ccreated.
+     */
     public SQLiteDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -51,7 +57,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Adding new item
+    /**
+     * Adds a given item to the inventory.
+     * @param item The item to add.
+     */
     public void addItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -66,7 +75,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    // Getting one item
+    /**
+     * Gets an item from the inventory with a given id.
+     * @param id The id of the item to get.
+     * @return Returns the item with the given id.
+     */
     public Item getItem(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -82,7 +95,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return item;
     }
 
-    // Getting All Items from DB
+    /**
+     * Gets a list of all items from the inventory.
+     * @return A list of Item objects, each Item object representing one item in the inventory.
+     */
     public List<Item> getAllItems() {
         List<Item> itemList = new ArrayList<Item>();
         // Select All Query
@@ -106,7 +122,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return itemList;
     }
 
-    // Getting item Count
+    /**
+     * Gets the count of how many items in the inventory.
+     * @return An integer representing the amount of items in the inventory.
+     */
     public int getItemCount() {
         String countQuery = "SELECT * FROM " + TABLE_ITEMS;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -116,7 +135,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    // Deleting an item
+    /**
+     * Deletes a given item from the inventory.
+     * @param deletedItem The item to be deleted.
+     */
     public void deleteItem(Item deletedItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ITEMS, KEY_ID + " = ?",
@@ -124,7 +146,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Updating an item
+    /**
+     * Updates an item that is already in the inventory with given new information.
+     * @param updatedItem The item to be updated.
+     * @return The number of rows updated, 1 if successful.
+     */
     public int updateItem(Item updatedItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

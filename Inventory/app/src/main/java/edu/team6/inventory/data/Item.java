@@ -2,10 +2,6 @@ package edu.team6.inventory.data;
 
 import java.io.Serializable;
 
-/**
- * Created by Starwater on 11/3/2016.
- */
-
 public class Item implements Serializable {
 
     /** The id of the item. */
@@ -18,12 +14,18 @@ public class Item implements Serializable {
     private String mCondition;
     /** The description of the item. */
     private String mDescription;
+    /** The serial number of the item. */
     private String mSerialNumber;
+    /** The make of the item. */
     private String mMake;
+    /** The model of the item. */
     private String mModel;
 
+    /**
+     * Constructs an item object - default constructor
+     */
     public Item() {
-
+        // do nothing
     }
 
     /**
@@ -35,22 +37,28 @@ public class Item implements Serializable {
         this.mName = theName;
     }
 
-    public Item (int theId, String theName, double theValue) {
+    /**
+     * Creates an Item with the given property values.
+     * @param theId The id of the item.
+     * @param theName The name of the item.
+     * @param theValue The value of the item.
+     * @param theCondition The condition of the item.
+     * @param theDescription A description of the item.
+     */
+    public Item (int theId, String theName, double theValue, String theCondition, String theDescription) {
         this(theId, theName);
         this.mValue = theValue;
-    }
-
-    public Item (int theId, String theName, double theValue, String theCondition) {
-        this(theId, theName, theValue);
         this.mCondition = theCondition;
-    }
-
-    public Item (int theId, String theName, double theValue, String theCondition, String theDescription) {
-        this(theId, theName, theValue, theCondition);
         this.mDescription = theDescription;
     }
 
-    //no id
+    /**
+     * Creates an Item with the given item property values with a default id of 0.
+     * @param theName The name of the item.
+     * @param theValue The value of the item.
+     * @param theCondition The condition of the item.
+     * @param theDescription A description of the item.
+     */
     public Item (String theName, double theValue, String theCondition, String theDescription) {
         this(0, theName, theValue, theCondition, theDescription);
     }

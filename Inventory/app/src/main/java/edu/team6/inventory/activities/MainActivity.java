@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import edu.team6.inventory.R;
 
+/**
+ * NOT USED DO NOT GRADE THIS CLASS.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

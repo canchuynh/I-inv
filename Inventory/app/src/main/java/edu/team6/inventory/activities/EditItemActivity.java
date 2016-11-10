@@ -20,6 +20,8 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  */
 public class EditItemActivity extends AppCompatActivity {
 
+    /** The SQLite DB handler used to store items in the inventory. */
+    private SQLiteDBHandler mDBhandler;
     /** An ArrayList of all items in the inventory.. */
     private ArrayList<Item> itemList;
     /** The EditText field for item name editing input. */
@@ -32,8 +34,6 @@ public class EditItemActivity extends AppCompatActivity {
     private EditText mDescriptionField;
     /** The button used to save item edits to the inventory. */
     private Button mSaveEditsButton;
-    /** The SQLite DB handler used to store items in the inventory. */
-    private SQLiteDBHandler mDBhandler;
     /** The item being edited. */
     private Item theEditItem;
 
