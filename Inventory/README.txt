@@ -7,7 +7,9 @@ Features
 	Provides Sign In
 	*	Uses Google Sign in (and out), user can pick from preexisting account on device or add new account.
 	*	To sign in: Menu (triple dots) > Sign In and select account or add new account.
-	*	Test account not provided, please use any gmail account. The assumptions is all user on play store has a gmail therefore all user with this app will have an account.
+	*	Test account (You can use any gmail):
+			User: I.inv.Test@gmail
+			Pass: TeamSixTest
 	*	To sign out: Menu (triple dots) > Sign Out
 	
 	One other feature: SQLite Database
