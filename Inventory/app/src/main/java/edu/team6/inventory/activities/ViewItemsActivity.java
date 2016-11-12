@@ -68,7 +68,7 @@ public class ViewItemsActivity extends AppCompatActivity {
             data.add(datum);
         }
         SimpleAdapter itemsAdapter = new SimpleAdapter(this, data,
-                android.R.layout.simple_list_item_2,
+                R.layout.custom_inventory_list_items,
                 new String[] {"name", "description"},
                 new int[] {android.R.id.text1,
                         android.R.id.text2});
