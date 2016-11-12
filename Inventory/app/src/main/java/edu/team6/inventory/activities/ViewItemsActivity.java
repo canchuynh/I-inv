@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.team6.inventory.R;
 import edu.team6.inventory.data.Item;
@@ -49,8 +52,27 @@ public class ViewItemsActivity extends AppCompatActivity {
         final List<String> itemList = getInventoryItemNamesFromDB();
 
         // setting up adapter for listviewu
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
+        //ArrayAdapter<String> itemsAdapter =
+        //        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
+
+        // Simple Adapter Implementation for sub items
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+        for (Item item : inventory) {
+            Map<String, String> datum = new HashMap<String, String>(2);
+            datum.put("name", item.getmName());
+            String description = item.getmDescription();
+            if (description.equals("")) {
+                description = "No description.";
+            }
+            datum.put("description", description);
+            data.add(datum);
+        }
+        SimpleAdapter itemsAdapter = new SimpleAdapter(this, data,
+                android.R.layout.simple_list_item_2,
+                new String[] {"name", "description"},
+                new int[] {android.R.id.text1,
+                        android.R.id.text2});
+
 
         // attach listview
         mItemListView = (ListView) findViewById(R.id.items_listview);
