@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class ViewItemsActivity extends AppCompatActivity {
     private SQLiteDBHandler mDBhandler;
     /** The ListView which displays the inventory. */
     private ListView mItemListView;
+    /** The SearchView used to search the inventory. */
+    private SearchView mSearchView;
+    /** The inventory of items. */
+    private List<Item> mInventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,10 @@ public class ViewItemsActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        // Connecting UI components
+        mSearchView = (SearchView) findViewById(R.id.item_search);
+        mSearchView.setOnQueryTextListener(new ItemSearchListener());
+
         // Create placeholder/test items
         if(getInventoryFromDB().isEmpty()) {
             runTestingCode();
@@ -47,6 +56,7 @@ public class ViewItemsActivity extends AppCompatActivity {
 
         // cast arraylist to pass to intent extras
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
+        mInventory = inventory;
 
         // array of string of items
         final List<String> itemList = getInventoryItemNamesFromDB();
@@ -55,42 +65,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         //ArrayAdapter<String> itemsAdapter =
         //        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 
-        // Simple Adapter Implementation for sub items
-        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-        for (Item item : inventory) {
-            Map<String, String> datum = new HashMap<String, String>(2);
-            datum.put("name", item.getmName());
-            String description = item.getmDescription();
-            if (description.equals("")) {
-                description = "No description.";
-            }
-            datum.put("description", description);
-            data.add(datum);
-        }
-        SimpleAdapter itemsAdapter = new SimpleAdapter(this, data,
-                R.layout.custom_inventory_list_items,
-                new String[] {"name", "description"},
-                new int[] {android.R.id.text1,
-                        android.R.id.text2});
-
-
-        // attach listview
-        mItemListView = (ListView) findViewById(R.id.items_listview);
-        mItemListView.setAdapter(itemsAdapter);
-        mItemListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ViewItemsActivity.this, ItemDetailsActivity.class);
-                // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO VIEW ITEM DETAILS
-                intent.putExtra("ItemList", inventory);
-                // ADDS THE SELECTED ITEM TO EXTRAS
-                intent.putExtra("selected", itemList.get(position));
-                startActivity(intent);
-            }
-
-        });
+        setItemListView(""); // Creates listview of items with all inventory
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +79,56 @@ public class ViewItemsActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    /**
+     * Creates a listview adapter for the inventory with items that contain the given search text.
+     * @param searchText A string to look for matching items. If empty, include all items.
+     */
+    private void setItemListView(String searchText) {
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
+        final ArrayList<Item> searchedInventory = new ArrayList<Item>();
+
+        // Simple Adapter Implementation for sub items
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+        for (Item item : inventory) {
+            if (item.getmName().toLowerCase().contains(searchText.toLowerCase())) {
+                Map<String, String> datum = new HashMap<String, String>(2);
+                datum.put("name", item.getmName());
+                String description = item.getmDescription();
+                if (description.equals("")) {
+                    description = "No description.";
+                }
+                datum.put("description", description);
+                data.add(datum);
+                searchedInventory.add(item);
+            }
+        }
+
+        // Creates the simple adapter
+        SimpleAdapter itemsAdapter = new SimpleAdapter(this, data,
+                R.layout.custom_inventory_list_items,
+                new String[] {"name", "description"},
+                new int[] {android.R.id.text1,
+                        android.R.id.text2});
+
+        // attach adapter to listview
+        mItemListView = (ListView) findViewById(R.id.items_listview);
+        mItemListView.setAdapter(itemsAdapter);
+        mItemListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ViewItemsActivity.this, ItemDetailsActivity.class);
+                // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO VIEW ITEM DETAILS
+                intent.putExtra("ItemList", inventory);
+                // ADDS THE SELECTED ITEM TO EXTRAS
+                intent.putExtra("selected", searchedInventory.get(position).getmName());
+                startActivity(intent);
+            }
+
+        });
     }
 
     /**
@@ -127,6 +152,26 @@ public class ViewItemsActivity extends AppCompatActivity {
         List<Item> inventory = mDBhandler.getAllItems();
         return inventory;
     }
+
+    /**
+     * This ItemSearchListener allows the user to be able to search for items by their name.
+     */
+    private class ItemSearchListener implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            setItemListView(query);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            setItemListView(newText);
+            return true;
+        }
+    }
+
+
 
     /**
      * Creates initial placeholder items

@@ -47,7 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_height="50dp"
-            app:queryHint="(search to be implemented)" />
+            android:id="@+id/item_search" />
 
         <include layout="@layout/content_view_items"
             android:layout_height="150dp"
