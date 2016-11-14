@@ -68,7 +68,7 @@ public class AddItemActivity extends AppCompatActivity {
                     DBhandler.close();
 
                     // Move back to viewing inventory after adding an item
-                    Intent backToViewInventory = new Intent(AddItemActivity.this, ViewItemsActivity.class);
+                    Intent backToViewInventory = new Intent(AddItemActivity.this, InventoryActivity.class);
                     backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity implements
 //            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
 //            updateUI(true);
             Toast.makeText(getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, ViewItemsActivity.class);
+            Intent intent = new Intent(this, InventoryActivity.class);
             startActivity(intent);
             finish();
         } else {

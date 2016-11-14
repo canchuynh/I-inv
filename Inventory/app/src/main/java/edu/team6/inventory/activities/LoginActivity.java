@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast toast = Toast.makeText(getApplicationContext(), acct.toString(), Toast.LENGTH_LONG);
             toast.show();
-            Intent intent = new Intent(this, ViewItemsActivity.class);
+            Intent intent = new Intent(this, InventoryActivity.class);
             startActivity(intent);
             finish();
         } else {
