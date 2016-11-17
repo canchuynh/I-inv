@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import edu.team6.inventory.R;
+
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -97,7 +97,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                         // Make a toast to provide feedback to user
                         Toast.makeText(ItemDetailsActivity.this, "Item deleted! ", Toast.LENGTH_SHORT).show();
                         // Go back to viewing inventory
-                        Intent intent = new Intent(ItemDetailsActivity.this, InventoryActivity.class);
+                        Intent intent = new Intent(ItemDetailsActivity.this, ViewItemsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_NEW_TASK);

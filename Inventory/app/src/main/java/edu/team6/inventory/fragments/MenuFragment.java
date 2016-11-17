@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +31,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
-import edu.team6.inventory.R;
+
+import edu.team6.inventory.activities.R;
+import edu.team6.inventory.activities.ViewItemsActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 

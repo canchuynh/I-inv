@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.team6.inventory.R;
+
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -25,7 +26,7 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  * SQLite database. From this activity a user able to add a new item as well as view the details
  * of a previously added item.
  */
-public class InventoryActivity extends AppCompatActivity {
+public class  ViewItemsActivity extends AppCompatActivity {
 
     /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
@@ -40,7 +41,7 @@ public class InventoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDBhandler = new SQLiteDBHandler(this);
-        setContentView(R.layout.activity_inventory);
+        setContentView(R.layout.activity_view_items);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -70,7 +71,7 @@ public class InventoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addItem = new Intent(InventoryActivity.this, AddItemActivity.class);
+                Intent addItem = new Intent(ViewItemsActivity.this, AddItemActivity.class);
                 // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO ADDITEM ACTIVITY
                 addItem.putExtra("ItemList", inventory);
                 startActivity(addItem);
@@ -119,7 +120,7 @@ public class InventoryActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(InventoryActivity.this, ItemDetailsActivity.class);
+                Intent intent = new Intent(ViewItemsActivity.this, ItemDetailsActivity.class);
                 // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO VIEW ITEM DETAILS
                 intent.putExtra("ItemList", inventory);
                 // ADDS THE SELECTED ITEM TO EXTRAS

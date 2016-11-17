@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import edu.team6.inventory.R;
+
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -77,7 +77,7 @@ public class EditItemActivity extends AppCompatActivity {
                     mDBhandler.close();
 
                     // Go back to viewing inventory
-                    Intent backToViewInventory = new Intent(EditItemActivity.this, InventoryActivity.class);
+                    Intent backToViewInventory = new Intent(EditItemActivity.this, ViewItemsActivity.class);
                     backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);

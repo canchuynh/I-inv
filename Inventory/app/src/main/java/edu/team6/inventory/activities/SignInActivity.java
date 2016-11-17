@@ -19,7 +19,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import edu.team6.inventory.R;
+
 
 /**
  * NOT USED DO NOT GRADE THIS CLASS.
@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity implements
 //            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
 //            updateUI(true);
             Toast.makeText(getApplicationContext(), "Welcome " + acct.getDisplayName() + "!", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, InventoryActivity.class);
+            Intent intent = new Intent(this, ViewItemsActivity.class);
             startActivity(intent);
             finish();
         } else {

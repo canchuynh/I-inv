@@ -17,7 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import edu.team6.inventory.R;
+
 
 /**
  * NOT USED DO NOT GRADE THIS CLASS.
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast toast = Toast.makeText(getApplicationContext(), acct.toString(), Toast.LENGTH_LONG);
             toast.show();
-            Intent intent = new Intent(this, InventoryActivity.class);
+            Intent intent = new Intent(this, ViewItemsActivity.class);
             startActivity(intent);
             finish();
         } else {
