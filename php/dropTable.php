@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 
 			$userId = isset($_GET['userId']) ? $_GET['userId'] : 'DumpTable';
 			
-			if ($userId = "")
+			if ($userId != "") {
 				//Drop Table
 				$sql = "TRUNCATE " . $username . "." . $userId;
 			 

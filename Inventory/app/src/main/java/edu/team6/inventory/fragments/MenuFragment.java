@@ -102,6 +102,12 @@ public class MenuFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUserID();
+    }
+
     /**
      * Checks shared pref to see if user ID is present.
      */
