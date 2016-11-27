@@ -47,7 +47,7 @@ public class MenuFragment extends Fragment implements
 
     /** URL for creating tables to SQL server. */
     private final static String CREATE_TABLE_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/makeTable.php?cmd=makeTable";
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/createTable.php?";
 
     /** URL for Dropping the table. */
     private final static String DROP_URL
@@ -163,7 +163,7 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
             googleId = acct.getId().toString();
-            makeTable();
+            createTable();
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
@@ -171,6 +171,15 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
         }
+    }
+
+    /**
+     * Creates table in web server if one does not already exist. Web server must be defined and running.
+     */
+    private void createTable() {
+        String url = (CREATE_TABLE_URL + "userId=" + googleId);
+        new AddItemTask().execute(CREATE_TABLE_URL + "userId=" + googleId);
+        Log.d("MAKE_TABLE", url);
     }
 
     /**
