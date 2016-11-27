@@ -55,7 +55,7 @@ public class MenuFragment extends Fragment implements
 
     /** URL for Dropping the table. */
     private final static String DROP_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/dropTable.php";
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/dropTable.php?";
 
     /** URL for adding items to SQL server. */
     private final static String EXPORT_URL
@@ -222,7 +222,7 @@ public class MenuFragment extends Fragment implements
     private void export() {
 
         // Drops table before exporting.
-        new AddItemTask().execute(DROP_URL);
+        new AddItemTask().execute(DROP_URL + "userId=" + googleId);
 
         SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
 
@@ -430,6 +430,7 @@ public class MenuFragment extends Fragment implements
                     dbHandler.addItem(item);
                 }
 
+                // Refresh Inventory list.
                 Intent intent = new Intent(getContext(), InventoryActivity.class);
                 startActivity(intent);
                 getActivity().finish();

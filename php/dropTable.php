@@ -11,14 +11,18 @@ error_reporting(E_ALL);
         	$db = new PDO($dsn, $username, $password);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-			//Drop Table
-			$sql = "TRUNCATE Inventory;";
-		 
-			//attempts to drop table
-			if ($db->query($sql)) {
-				echo '{"result": "success"}';
-				$db = null;
-			}  
+			$userId = isset($_GET['userId']) ? $_GET['userId'] : 'DumpTable';
+			
+			if ($userId = "")
+				//Drop Table
+				$sql = "TRUNCATE " . $username . "." . $userId;
+			 
+				//attempts to drop table
+				if ($db->query($sql)) {
+					echo '{"result": "success"}';
+					$db = null;
+				}
+			}
         } catch(PDOException $e) {
         	$error_message = $e->getMessage();
         	echo 'There was an error connecting to the database.';
