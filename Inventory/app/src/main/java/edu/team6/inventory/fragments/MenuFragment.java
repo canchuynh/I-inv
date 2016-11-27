@@ -60,6 +60,10 @@ public class MenuFragment extends Fragment implements
     private final static String EXPORT_URL
             = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/addItem.php?";
 
+    /** URL for adding items to SQL server. */
+    private final static String IMPORT_URL
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/list.php?";
+
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
 
@@ -239,7 +243,7 @@ public class MenuFragment extends Fragment implements
      * Export SQLite database to a web server. Web server must be defined and running.
      */
     private void importInv() {
-        // TODO: Import
+        new DownloadInventoryTask().execute(IMPORT_URL + googleId);
     }
 
     /**
@@ -355,7 +359,7 @@ public class MenuFragment extends Fragment implements
     /**
      * AsyncTask class for downloading items from web server.
      */
-    private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
+    private class DownloadInventoryTask extends AsyncTask<String, Void, String> {
 
         private SQLiteDBHandler dbHandler;
         private List<Item> inventory;
