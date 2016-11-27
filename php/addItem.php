@@ -18,6 +18,8 @@ error_reporting(E_ALL);
             $value = isset($_GET['value']) ? $_GET['value'] : '';
             $condition = isset($_GET['condition']) ? $_GET['condition'] : '';
 			$description = isset($_GET['description']) ? $_GET['description'] : '';
+			
+			if ($userId == "") $userId = "DumpTable";
 			//echo $course_id . "<br />";
             /* Validation
 			if (strlen($course_id) < 7 

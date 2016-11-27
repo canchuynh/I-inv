@@ -11,6 +11,7 @@ error_reporting(E_ALL);
         	$db = new PDO($dsn, $username, $password);
 			
 			$userId = isset($_GET['userId']) ? $_GET['userId'] : 'DumpTable';
+			if ($userId == "") $userId = "DumpTable";
 	        	
 			$select_sql = 
 				'SELECT table_name 
