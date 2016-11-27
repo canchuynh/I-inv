@@ -9,6 +9,10 @@
         android:title="@string/export"
         app:showAsAction="never" />
     <item
+        android:id="@+id/importInv"
+        android:title="@string/importInv"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/signIn"
         android:title="@string/signIn"
         app:showAsAction="never" />

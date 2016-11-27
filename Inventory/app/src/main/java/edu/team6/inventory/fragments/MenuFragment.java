@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.team6.inventory.R;
@@ -69,6 +70,9 @@ public class MenuFragment extends Fragment implements
     public MenuFragment() {
         // Required empty public constructor
     }
+
+    /** Tag for logging. */
+    private static final String TAG = "MenuFragment";
 
 
     @Override
@@ -117,7 +121,10 @@ public class MenuFragment extends Fragment implements
                 signOut();
                 return true;
             case R.id.export:
-                export();
+                export(); //TODO: Rename to exportInv?
+                return true;
+            case R.id.importInv:
+                importInv();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -229,6 +236,13 @@ public class MenuFragment extends Fragment implements
     }
 
     /**
+     * Export SQLite database to a web server. Web server must be defined and running.
+     */
+    private void importInv() {
+        // TODO: Import
+    }
+
+    /**
      * Builds URL for web service.
      * @param item Item to be converted to URL for web service.
      * @return URL string for web service.
@@ -262,7 +276,6 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
         }
-        Log.d("MAKE_TABLE",  sb.toString());
         return sb.toString();
     }
 
@@ -339,4 +352,78 @@ public class MenuFragment extends Fragment implements
         }
     }
 
+    /**
+     * AsyncTask class for downloading items from web server.
+     */
+    private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
+
+        private SQLiteDBHandler dbHandler;
+        private List<Item> inventory;
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to download inventory: "
+                            + e.getMessage();
+                    Log.e(TAG, e.getMessage());
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            inventory = new ArrayList<>();
+            result = Item.parseCourseJSON(result, inventory);
+            // Something wrong with the JSON returned.
+            if (result != null) {
+                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            // Everything is good, show the list of courses.
+            if (!inventory.isEmpty()) {
+
+                if (dbHandler == null) {
+                    dbHandler = new SQLiteDBHandler(getActivity());
+                }
+
+                // Delete old data so that you can refresh the local
+                // database with the network data.
+                dbHandler.deleteAllItems();
+
+                // Also, add to the local database
+                for (int i = 0; i < inventory.size(); i++) {
+                    Item item = inventory.get(i);
+                    dbHandler.addItem(item);
+                }
+            }
+        }
+    }
 }
