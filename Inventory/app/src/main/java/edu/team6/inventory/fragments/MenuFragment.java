@@ -115,7 +115,7 @@ public class MenuFragment extends Fragment implements
         SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
         googleId = sharedPref.getString(getString(R.string.userId), ""); // Get user ID if exist
 
-        if (googleId.equals("")) signOut();
+//        if (googleId.equals("")) signOut(); //TODO: check if google services are running first.
     }
 
     @Override
@@ -134,6 +134,7 @@ public class MenuFragment extends Fragment implements
                 signOut();
                 return true;
             case R.id.export:
+                // TODO: if no usererID stop export
                 export(); //TODO: Rename to exportInv?
                 return true;
             case R.id.importInv:
