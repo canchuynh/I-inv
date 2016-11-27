@@ -45,6 +45,10 @@ public class MenuFragment extends Fragment implements
     /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
 
+    /** URL for creating tables to SQL server. */
+    private final static String CREATE_TABLE_URL
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/makeTable.php?cmd=makeTable";
+
     /** URL for Dropping the table. */
     private final static String DROP_URL
             = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/dropTable.php";
@@ -159,7 +163,7 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
             googleId = acct.getId().toString();
-
+            makeTable();
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
