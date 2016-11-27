@@ -35,5 +35,6 @@
     <string name="signIn">Sign In</string>
     <string name="export">Export</string>
     <string name="importInv">Import</string>
+    <string name="userId">userId</string>
 
 </resources>

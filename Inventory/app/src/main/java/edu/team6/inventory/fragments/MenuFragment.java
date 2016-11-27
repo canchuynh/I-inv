@@ -109,11 +109,13 @@ public class MenuFragment extends Fragment implements
     }
 
     /**
-     * Checks shared pref to see if user ID is present.
+     * Checks shared pref to see if user ID is present, if not set ID to "".
      */
     private void updateUserID() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        googleId = prefs.getString("userId", ""); // Get user ID if exist
+        SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
+        googleId = sharedPref.getString(getString(R.string.userId), ""); // Get user ID if exist
+
+        if (googleId.equals("")) signOut();
     }
 
     @Override
@@ -159,8 +161,8 @@ public class MenuFragment extends Fragment implements
                     @Override
                     public void onResult(Status status) {
                         //Remove User ID to shared pref.
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        prefs.edit().putString("UserID", "").commit();
+                        SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
+                        sharedPref.edit().putString(getString(R.string.userId), "").commit();
                         // Update User ID.
                         updateUserID();
                         Toast.makeText(
@@ -194,10 +196,10 @@ public class MenuFragment extends Fragment implements
         if (result.isSuccess()) {
             // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
-            googleId = acct.getId().toString(); //Get user ID
             //Save User ID to shared pref.
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-            prefs.edit().putString("UserID", googleId).commit();
+            SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
+            sharedPref.edit().putString(getString(R.string.userId), acct.getId().toString()).commit();
+            updateUserID();
 
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
@@ -250,6 +252,7 @@ public class MenuFragment extends Fragment implements
      * Export SQLite database to a web server. Web server must be defined and running.
      */
     private void importInv() {
+        //TODO: See if ID counter increments.
         new DownloadInventoryTask().execute(IMPORT_URL + "userId=" +  googleId);
         Log.d(TAG, IMPORT_URL + "userId=" + googleId);
     }
