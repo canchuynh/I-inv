@@ -47,11 +47,11 @@ public class MenuFragment extends Fragment implements
 
     /** URL for Dropping the table. */
     private final static String DROP_URL
-            = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/dropTable.php";
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/dropTable.php";
 
     /** URL for adding items to SQL server. */
     private final static String EXPORT_URL
-            = "http://cssgate.insttech.washington.edu/~canhuynh/I-Inv/addItem.php?";
+            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/addItem.php?";
 
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
