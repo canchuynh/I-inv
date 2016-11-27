@@ -243,7 +243,8 @@ public class MenuFragment extends Fragment implements
      * Export SQLite database to a web server. Web server must be defined and running.
      */
     private void importInv() {
-        new DownloadInventoryTask().execute(IMPORT_URL + googleId);
+        new DownloadInventoryTask().execute(IMPORT_URL + "userId=" +  googleId);
+        Log.d(TAG, IMPORT_URL + "userId=" + googleId);
     }
 
     /**
@@ -427,6 +428,8 @@ public class MenuFragment extends Fragment implements
                     Item item = inventory.get(i);
                     dbHandler.addItem(item);
                 }
+
+                
             }
         }
     }
