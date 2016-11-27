@@ -2,8 +2,10 @@ package edu.team6.inventory.fragments;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,9 +86,19 @@ public class MenuFragment extends Fragment implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        updateUserID();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
 
+    }
+
+    /**
+     * Checks shared pref to see if user ID is present.
+     */
+    private void updateUserID() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        googleId = prefs.getString("userId", ""); // Get user ID if exist
     }
 
     @Override
@@ -128,6 +140,11 @@ public class MenuFragment extends Fragment implements
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
+                        //Remove User ID to shared pref.
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        prefs.edit().putString("UserID", "").commit();
+                        // Update User ID.
+                        updateUserID();
                         Toast.makeText(
                                 getActivity().getApplicationContext(),
                                 "Logged out!",
@@ -136,6 +153,8 @@ public class MenuFragment extends Fragment implements
                     }
                 });
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,12 +176,17 @@ public class MenuFragment extends Fragment implements
         if (result.isSuccess()) {
             // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
+            googleId = acct.getId().toString(); //Get user ID
+            //Save User ID to shared pref.
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+            prefs.edit().putString("UserID", googleId).commit();
+
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
                     "Welcome " + acct.getDisplayName() + "!",
                     Toast.LENGTH_LONG)
                     .show();
-            googleId = acct.getId().toString();
+
             createTable();
         } else {
             Toast.makeText(
