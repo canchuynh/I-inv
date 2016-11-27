@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,6 +55,9 @@ public class MenuFragment extends Fragment implements
 
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
+
+    /** Google User ID */
+    private String googleId = "";
 
     /** Required empty public constructor. */
     public MenuFragment() {
@@ -154,6 +158,8 @@ public class MenuFragment extends Fragment implements
                     "Welcome " + acct.getDisplayName() + "!",
                     Toast.LENGTH_LONG)
                     .show();
+            googleId = acct.getId().toString();
+
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
