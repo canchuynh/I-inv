@@ -429,7 +429,7 @@ public class MenuFragment extends Fragment implements
                     dbHandler.addItem(item);
                 }
 
-                
+                //TODO: refresh InventoryActivty page
             }
         }
     }
