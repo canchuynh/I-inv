@@ -177,9 +177,7 @@ public class MenuFragment extends Fragment implements
      * Creates table in web server if one does not already exist. Web server must be defined and running.
      */
     private void createTable() {
-        String url = (CREATE_TABLE_URL + "userId=" + googleId);
         new AddItemTask().execute(CREATE_TABLE_URL + "userId=" + googleId);
-        Log.d("MAKE_TABLE", url);
     }
 
     /**
@@ -188,7 +186,7 @@ public class MenuFragment extends Fragment implements
     private void export() {
 
         // Drops table before exporting.
-        new AddItemTask().execute(new String[]{DROP_URL.toString()});
+        new AddItemTask().execute(DROP_URL);
 
         SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
 
@@ -196,7 +194,7 @@ public class MenuFragment extends Fragment implements
 
         // Export all items. One at a time.
         for (Item i : inventory) {
-            new AddItemTask().execute(new String[]{buildCourseURL(i).toString()});
+            new AddItemTask().execute(buildAddItemURL(i).toString());
         }
 
         Toast.makeText(
@@ -211,12 +209,15 @@ public class MenuFragment extends Fragment implements
      * @param item Item to be converted to URL for web service.
      * @return URL string for web service.
      */
-    private String buildCourseURL(Item item) {
+    private String buildAddItemURL(Item item) {
 
         StringBuilder sb = new StringBuilder(EXPORT_URL);
 
         try {
-            sb.append("id=");
+            sb.append("userId=");
+            sb.append(googleId);
+
+            sb.append("&id=");
             sb.append(item.getmId());
 
             sb.append("&name=");
@@ -237,6 +238,7 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
         }
+        Log.d("MAKE_TABLE",  sb.toString());
         return sb.toString();
     }
 

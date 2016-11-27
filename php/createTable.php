@@ -10,7 +10,7 @@ error_reporting(E_ALL);
     	try {
         	$db = new PDO($dsn, $username, $password);
 			
-			$userId = isset($_GET['userId']) ? $_GET['userId'] : '';
+			$userId = isset($_GET['userId']) ? $_GET['userId'] : 'DumpTable';
 	        	
 			$select_sql = 
 				'SELECT table_name 

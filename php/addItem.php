@@ -12,6 +12,7 @@ error_reporting(E_ALL);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             //get inputs for course information
+			$userId = isset($_GET['userId']) ? $_GET['userId'] : 'DumpTable';
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $name = isset($_GET['name']) ? $_GET['name'] : '';
             $value = isset($_GET['value']) ? $_GET['value'] : '';
@@ -27,7 +28,7 @@ error_reporting(E_ALL);
             } else {    */
 
 			//build query
-			$sql = "INSERT INTO Inventory";
+			$sql = "INSERT INTO " . $username . "." . $userId;
 			$sql .= " VALUES ('$id', '$name', '$value', '$condition', '$description')";
 		 
 			//attempts to add record
