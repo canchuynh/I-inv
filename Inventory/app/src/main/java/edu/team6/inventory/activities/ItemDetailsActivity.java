@@ -3,10 +3,14 @@ package edu.team6.inventory.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +41,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private TextView mDescriptionDetail;
     /** The Button to edit this item's properties. */
     private Button mEditButton;
+    /** The ImageView to display the item image. */
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mConditionDetail = (TextView)findViewById(R.id.details_item_condition);
         mDescriptionDetail = (TextView)findViewById(R.id.details_item_description);
         mEditButton = (Button) findViewById(R.id.details_edit_button);
+        mImageView = (ImageView) findViewById(R.id.details_item_image);
 
         // Gets the list of all items
         final ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
@@ -68,6 +75,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mValueDetail.setText(       "Value: " + selectedItem.getmValue() + "");
         mConditionDetail.setText(   "Condition: " + selectedItem.getmCondition());
         mDescriptionDetail.setText( "Description: " + selectedItem.getmDescription());
+
+        // Process image
+        byte[] imageByteArr = selectedItem.getmImage();
+        if (imageByteArr != null) {
+            Bitmap theImage = BitmapFactory.decodeByteArray(imageByteArr, 0 ,imageByteArr.length);
+            mImageView.setImageBitmap(theImage);
+        }
 
         // Sets edit button's onclick to move to editing that item.
         mEditButton.setOnClickListener(new View.OnClickListener() {

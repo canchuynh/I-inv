@@ -27,6 +27,8 @@ public class Item implements Serializable {
     private String mMake;
     /** The model of the item. */
     private String mModel;
+    /** The image of the item. */
+    private byte[] mImage;
 
     /**
      * Constructs an item object - default constructor
@@ -183,4 +185,21 @@ public class Item implements Serializable {
             }
             return reason;
     }
+
+    /**
+     * Sets the image of the item as a byte array.
+     * @param mImage the image of the item as a byte array.
+     */
+    public void setmImage(byte[] mImage) {
+        this.mImage = mImage;
+    }
+
+    /**
+     * Returns the image of the item.
+     * @return The image of the item as a byte array.
+     */
+    public byte[] getmImage() {
+        return this.mImage;
+    }
+
 }

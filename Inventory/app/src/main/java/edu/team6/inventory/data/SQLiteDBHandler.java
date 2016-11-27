@@ -16,7 +16,7 @@ import java.util.List;
 public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     /** The database version. */
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
     /** The database name. */
     private static final String DATABASE_NAME = "Inventory";
     /** The name of the table to store items. */
@@ -28,6 +28,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String VALUE = "value";
     private static final String CONDITION = "condition";
     private static final String DESCRIPTION = "description";
+    private static final String IMAGE = "image";
     // END OF COLUMN NAME DEFINITIONS
 
     /**
@@ -45,7 +46,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                 + NAME + " TEXT NOT NULL UNIQUE,"
                 + VALUE + " REAL,"
                 + CONDITION + " TEXT,"
-                + DESCRIPTION + " TEXT"
+                + DESCRIPTION + " TEXT,"
+                + IMAGE + " BLOB"
                 + ")";
         db.execSQL(CREATE_TABLE);
     }
@@ -69,6 +71,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         values.put(VALUE, item.getmValue()); // Item Value
         values.put(CONDITION, item.getmCondition()); // Item Value
         values.put(DESCRIPTION, item.getmDescription()); // Item Value
+        values.put(IMAGE, item.getmImage()); // Item Image Blob
 
         // Inserting Row
         db.insert(TABLE_ITEMS, null, values);
@@ -84,13 +87,14 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_ITEMS, new String[]{KEY_ID,
-                NAME, VALUE, CONDITION, DESCRIPTION}, KEY_ID + "=?",
+                NAME, VALUE, CONDITION, DESCRIPTION, IMAGE}, KEY_ID + "=?",
         new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Item item = new Item(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), Double.parseDouble(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
+        item.setmImage(cursor.getBlob(5));
         // return item
         return item;
     }
@@ -114,6 +118,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                 item.setmValue(Double.parseDouble(cursor.getString(2)));
                 item.setmCondition(cursor.getString(3));
                 item.setmDescription(cursor.getString(4));
+                item.setmImage(cursor.getBlob(5));
                 // Adding item to list
                 itemList.add(item);
             } while (cursor.moveToNext());
@@ -171,6 +176,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         values.put(VALUE, updatedItem.getmValue());
         values.put(CONDITION, updatedItem.getmCondition());
         values.put(DESCRIPTION, updatedItem.getmDescription());
+        values.put(IMAGE, updatedItem.getmImage());
         // updating row
         return db.update(TABLE_ITEMS, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(updatedItem.getmId())});

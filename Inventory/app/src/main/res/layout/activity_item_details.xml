@@ -74,4 +74,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp" />
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/details_item_image"
+        android:layout_below="@+id/details_item_description"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp" />
+
 </RelativeLayout>
