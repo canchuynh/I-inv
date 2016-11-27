@@ -147,6 +147,16 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Deletes all Items from the inventory.
+     */
+    public void deleteAllItems() { //TODO: Make into private?
+        List<Item> inventory = getAllItems();
+        for(Item i : inventory) {
+            deleteItem(i);
+        }
+    }
+
+    /**
      * Updates an item that is already in the inventory with given new information.
      * @param updatedItem The item to be updated.
      * @return The number of rows updated, 1 if successful.
