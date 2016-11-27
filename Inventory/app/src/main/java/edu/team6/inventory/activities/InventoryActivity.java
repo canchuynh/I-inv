@@ -80,6 +80,12 @@ public class InventoryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setItemListView("");
+    }
+
     /**
      * Creates a listview adapter for the inventory with items that contain the given search text.
      * @param searchText A string to look for matching items. If empty, include all items.
