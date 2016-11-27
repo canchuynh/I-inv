@@ -154,6 +154,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         for(Item i : inventory) {
             deleteItem(i);
         }
+        // TODO: Drop table or del one by one?
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.delete(TABLE_ITEMS, null, null);
     }
 
     /**
