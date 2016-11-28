@@ -28,7 +28,7 @@
             android:value="barcode" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".ViewItemsActivity">
+        <activity android:name=".InventoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

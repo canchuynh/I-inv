@@ -77,7 +77,7 @@ public class EditItemActivity extends AppCompatActivity {
                     mDBhandler.close();
 
                     // Go back to viewing inventory
-                    Intent backToViewInventory = new Intent(EditItemActivity.this, ViewItemsActivity.class);
+                    Intent backToViewInventory = new Intent(EditItemActivity.this, InventoryActivity.class);
                     backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
