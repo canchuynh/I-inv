@@ -94,6 +94,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        setTitle("Item: " + selectedItem.getmName());
     }
 
     /**

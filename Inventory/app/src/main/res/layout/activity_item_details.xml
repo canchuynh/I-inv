@@ -11,13 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.team6.inventory.activities.ItemDetailsActivity">
 
-    <fragment
-        android:name="edu.team6.inventory.fragments.MenuFragment"
-        android:id="@+id/menu_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_menu" />
-
     <TextView
         android:text="NAME OF ITEM"
         android:layout_width="wrap_content"

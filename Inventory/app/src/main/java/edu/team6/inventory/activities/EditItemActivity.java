@@ -111,6 +111,8 @@ public class EditItemActivity extends AppCompatActivity {
 
             }
         });
+
+        setTitle("Editing: " + theEditItem.getmName());
     }
 
     /**

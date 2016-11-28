@@ -49,6 +49,7 @@ public class AddItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        setTitle("Add A New Item");
 
         // Connecting UI components
         mAddItemButton = (Button) findViewById(R.id.item_add_button);
