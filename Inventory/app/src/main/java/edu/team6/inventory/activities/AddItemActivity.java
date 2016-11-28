@@ -5,14 +5,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -26,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 
@@ -38,18 +41,46 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  */
 public class AddItemActivity extends AppCompatActivity {
 
-    /** An ArrayList of all items in the inventory.. */
+    /**
+     * Constant for adding images to items.
+     */
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    /**
+     * An ArrayList of all items in the inventory..
+     */
     private ArrayList<Item> itemList;
-    /** The EditText field for item name input. */
+    /**
+     * The EditText field for item name input.
+     */
     private EditText mNameField;
-    /** The EditText field for item value input. */
+    /**
+     * The EditText field for item value input.
+     */
     private EditText mValueField;
-    /** The EditText field for item condition input. */
+    /**
+     * The EditText field for item condition input.
+     */
     private EditText mConditionField;
-    /** The EditText field for item description input. */
+    /**
+     * The EditText field for item description input.
+     */
     private EditText mDescriptionField;
-    /** The button used to add an item to the inventory. */
+    /**
+     * The button used to add an image to the item.
+     */
+    private Button mAddImageButton;
+    /**
+     * The button used to add an item to the inventory.
+     */
     private Button mAddItemButton;
+    /**
+     * The ImageView to display item image.
+     */
+    private ImageView mImageView;
+    /**
+     * The Bitmap storing the image.
+     */
+    private Bitmap mImageBitmap;
 
     private Button mAddViaScanner;
 
@@ -57,20 +88,22 @@ public class AddItemActivity extends AppCompatActivity {
     private static final String apiurl = "https://api.upcitemdb.com/prod/trial/lookup?upc=";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        setTitle("Add A New Item");
 
         //barcode button
         mAddViaScanner = (Button) findViewById(R.id.item_barcode_button);
         // Connecting UI components
         mAddItemButton = (Button) findViewById(R.id.item_add_button);
+        mAddImageButton = (Button) findViewById(R.id.item_add_image_button);
         mNameField = (EditText) findViewById(R.id.item_name_field);
         mValueField = (EditText) findViewById(R.id.item_value_field);
         mConditionField = (EditText) findViewById(R.id.item_condition_field);
         mDescriptionField = (EditText) findViewById(R.id.item_description_field);
+        mImageView = (ImageView) findViewById(R.id.item_image_view);
 
         // Creates the database handler
         final SQLiteDBHandler DBhandler = new SQLiteDBHandler(this);
@@ -78,7 +111,7 @@ public class AddItemActivity extends AppCompatActivity {
         itemList = (ArrayList<Item>) getIntent().getSerializableExtra("ItemList");
 
         // Defining and setting the "Add Item" button's onclick
-        mAddItemButton.setOnClickListener(new View.OnClickListener(){
+        mAddItemButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) { // Anonymous OnClickListener class
@@ -89,6 +122,14 @@ public class AddItemActivity extends AppCompatActivity {
                     Item newItem = new Item(mNameField.getText().toString(),
                             itemValue,
                             mConditionField.getText().toString(), mDescriptionField.getText().toString());
+
+                    // Adds the image if available
+                    if (mImageBitmap != null) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] imageData = baos.toByteArray();
+                        newItem.setmImage(imageData);
+                    }
 
                     // Add item to local SQLite DB
                     DBhandler.addItem(newItem);
@@ -106,7 +147,7 @@ public class AddItemActivity extends AppCompatActivity {
         });
 
         //Add listner for mAddViaScanner
-        mAddViaScanner.setOnClickListener(new View.OnClickListener(){
+        mAddViaScanner.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
@@ -132,10 +173,9 @@ public class AddItemActivity extends AppCompatActivity {
                     Log.d("warning:", "No barcode captured, intent data is null");
                 }
             } else {
-               Log.w("warning:", "resultCode Failure");
+                Log.w("warning:", "resultCode Failure");
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -144,7 +184,7 @@ public class AddItemActivity extends AppCompatActivity {
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected())
+        if (networkInfo != null && networkInfo.isConnected())
             return true;
         else
             return false;
@@ -159,15 +199,31 @@ public class AddItemActivity extends AppCompatActivity {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 result.append(line);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.d("GET", e.getLocalizedMessage());
         }
 
         return result.toString();
+    }
+
+    /**
+     * Validates all the input and returns the validity.
+     *
+     * @return True if all given input is valid, false otherwise.
+     */
+    private boolean validateFields() {
+        boolean result = true;
+        for (Item item : itemList) {
+            if (item.getmName().equals(mNameField.getText().toString())) {
+                result = false;
+                Toast.makeText(AddItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return result;
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -180,7 +236,7 @@ public class AddItemActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
-            try{
+            try {
                 JSONObject json = new JSONObject(result);
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
@@ -210,23 +266,36 @@ public class AddItemActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Toast.makeText(getBaseContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
+            mAddImageButton.setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) { // Anon OnClickListener
+                    dispatchTakePictureIntent();
 
+                }
+            });
         }
-    }
 
-    /**
-     * Validates all the input and returns the validity.
-     * @return True if all given input is valid, false otherwise.
-     */
-    private boolean validateFields() {
-        boolean result = true;
-        for (Item item : itemList) {
-            if (item.getmName().equals(mNameField.getText().toString())) {
-                result = false;
-                Toast.makeText(AddItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
+        /**
+         * Start an activity to take a picture to add an image to an item.
+         */
+        private void dispatchTakePictureIntent() {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-        return result;
+
+//        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                mImageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(mImageBitmap);
+            } else {
+                // do nothing
+            }
+        }
+
     }
 }

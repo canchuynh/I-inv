@@ -1,13 +1,18 @@
 package edu.team6.inventory.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 
@@ -20,6 +25,8 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  */
 public class EditItemActivity extends AppCompatActivity {
 
+    /** Constant for adding images to items. */
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
     /** An ArrayList of all items in the inventory.. */
@@ -34,6 +41,12 @@ public class EditItemActivity extends AppCompatActivity {
     private EditText mDescriptionField;
     /** The button used to save item edits to the inventory. */
     private Button mSaveEditsButton;
+    /** The button used to change the item's image. */
+    private Button mEditImageButton;
+    /** The bitmap of the image of this item. */
+    private Bitmap mImageBitmap;
+    /** The ImageView to display the item image. */
+    private ImageView mImageView;
     /** The item being edited. */
     private Item theEditItem;
 
@@ -51,6 +64,8 @@ public class EditItemActivity extends AppCompatActivity {
         mConditionField = (EditText) findViewById(R.id.edit_condition_field);
         mDescriptionField = (EditText) findViewById(R.id.edit_description_field);
         mSaveEditsButton = (Button) findViewById(R.id.save_edits_button);
+        mEditImageButton = (Button) findViewById(R.id.edit_image_button);
+        mImageView = (ImageView) findViewById(R.id.edit_image_view);
 
         // Creates the database handler and grabs the item being edited
         mDBhandler = new SQLiteDBHandler(this);
@@ -86,6 +101,38 @@ public class EditItemActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mEditImageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) { // Anon OnClickListener
+                dispatchTakePictureIntent();
+
+            }
+        });
+
+        setTitle("Editing: " + theEditItem.getmName());
+    }
+
+    /**
+     * Start an activity to take a picture to add an image to an item.
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            mImageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(mImageBitmap);
+        } else {
+            // do nothing
+        }
     }
 
     /**
@@ -97,6 +144,13 @@ public class EditItemActivity extends AppCompatActivity {
                 (mValueField.getText().toString().equals("")) ? 0 : Double.parseDouble(mValueField.getText().toString()));
         theEditItem.setmCondition(mConditionField.getText().toString());
         theEditItem.setmDescription(mDescriptionField.getText().toString());
+        if (mImageBitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageData = baos.toByteArray();
+            theEditItem.setmImage(imageData);
+            Toast.makeText(EditItemActivity.this, "Saving image! ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

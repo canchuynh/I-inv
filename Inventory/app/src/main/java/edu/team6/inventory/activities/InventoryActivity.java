@@ -7,16 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -25,7 +25,7 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  * SQLite database. From this activity a user able to add a new item as well as view the details
  * of a previously added item.
  */
-public class InventoryActivity extends AppCompatActivity {
+public class InventoryActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
@@ -35,6 +35,11 @@ public class InventoryActivity extends AppCompatActivity {
     private SearchView mSearchView;
     /** The inventory of items. */
     private List<Item> mInventory;
+    /** The current sorting method. */
+    private String mSort = "None";
+    /** The current search text. */
+    private String mSearchText = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +54,12 @@ public class InventoryActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new ItemSearchListener());
 
         // Create placeholder/test items
-        if(getInventoryFromDB().isEmpty()) {
+        if(getInventoryFromDB(mSort).isEmpty()) {
             runTestingCode();
         }
 
         // cast arraylist to pass to intent extras
-        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mSort);
         mInventory = inventory;
 
         // array of string of items
@@ -64,7 +69,7 @@ public class InventoryActivity extends AppCompatActivity {
         //ArrayAdapter<String> itemsAdapter =
         //        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 
-        setItemListView(""); // Creates listview of items with all inventory
+        setItemListView(mSearchText, mSort); // Creates listview of items with all inventory
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,14 +83,29 @@ public class InventoryActivity extends AppCompatActivity {
         });
 
 
+        Spinner spinner = (Spinner) findViewById(R.id.sort_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sorting_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setItemListView(mSearchText, mSort);
     }
 
     /**
      * Creates a listview adapter for the inventory with items that contain the given search text.
      * @param searchText A string to look for matching items. If empty, include all items.
      */
-    private void setItemListView(String searchText) {
-        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB();
+    private void setItemListView(String searchText, String sortMethod) {
+        final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(sortMethod);
         final ArrayList<Item> searchedInventory = new ArrayList<Item>();
 
         // Simple Adapter Implementation for sub items
@@ -136,7 +156,7 @@ public class InventoryActivity extends AppCompatActivity {
      */
     private List<String> getInventoryItemNamesFromDB(){
         ArrayList<String> inventory = new ArrayList<>();
-        List<Item> allitems = mDBhandler.getAllItems();
+        List<Item> allitems = mDBhandler.getAllItems(mSort);
         for (Item item : allitems) {
             inventory.add(item.getmName());
         }
@@ -147,8 +167,8 @@ public class InventoryActivity extends AppCompatActivity {
      * Gets a list of all items in the inventory.
      * @return A list of Item objects of every item in the inventory.
      */
-    private List<Item> getInventoryFromDB(){
-        List<Item> inventory = mDBhandler.getAllItems();
+    private List<Item> getInventoryFromDB(String sortMethod){
+        List<Item> inventory = mDBhandler.getAllItems(sortMethod);
         return inventory;
     }
 
@@ -159,18 +179,30 @@ public class InventoryActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-            setItemListView(query);
+            setItemListView(query, mSort);
+            mSearchText = query;
             return true;
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            setItemListView(newText);
+            setItemListView(newText, mSort);
+            mSearchText = newText;
             return true;
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        mSort = parent.getItemAtPosition(pos).toString();
+        setItemListView(mSearchText, mSort);
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // do nothing
+    }
 
     /**
      * Creates initial placeholder items
@@ -185,7 +217,7 @@ public class InventoryActivity extends AppCompatActivity {
 
         // Reading all items
         Log.d("Reading: ", "Reading all items..");
-        List<Item> allitems = mDBhandler.getAllItems();
+        List<Item> allitems = mDBhandler.getAllItems(mSort);
 
         for (Item item : allitems) {
             String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "

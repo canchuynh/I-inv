@@ -1,6 +1,13 @@
 package edu.team6.inventory.data;
 
+import android.util.EventLogTags;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Item implements Serializable {
 
@@ -20,6 +27,8 @@ public class Item implements Serializable {
     private String mMake;
     /** The model of the item. */
     private String mModel;
+    /** The image of the item. */
+    private byte[] mImage;
 
     /**
      * Constructs an item object - default constructor
@@ -142,4 +151,55 @@ public class Item implements Serializable {
     protected void setmId(int ID) {
         this.mId = ID;
     }
+
+    /**
+     * Parses the json string, returns an error message if unsuccessful.
+     * Returns course list if success.
+     *
+     * @param inventoryJSON JSON containing the inventory.
+     * @param inventory List of all items.
+     * @return reason or null if successful.
+     */
+    public static String parseCourseJSON(String inventoryJSON, List<Item> inventory) {
+
+            String reason = null;
+            if (inventoryJSON != null) {
+                try {
+                    JSONArray arr = new JSONArray(inventoryJSON);
+
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject obj = arr.getJSONObject(i);
+
+                        Item item = new Item(
+                                        obj.getInt("ID"),
+                                        obj.getString("Name"),
+                                        obj.getDouble("Value"),
+                                        obj.getString("State"),
+                                        obj.getString("Description"));
+                        inventory.add(item);
+                    }
+                } catch (JSONException e) {
+                    reason =  "Unable to parse data, Reason: " + e.getMessage();
+                }
+
+            }
+            return reason;
+    }
+
+    /**
+     * Sets the image of the item as a byte array.
+     * @param mImage the image of the item as a byte array.
+     */
+    public void setmImage(byte[] mImage) {
+        this.mImage = mImage;
+    }
+
+    /**
+     * Returns the image of the item.
+     * @return The image of the item as a byte array.
+     */
+    public byte[] getmImage() {
+        return this.mImage;
+    }
+
 }
