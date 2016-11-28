@@ -133,6 +133,7 @@ public class AddItemActivity extends AppCompatActivity {
             Toast.makeText(AddItemActivity.this, "Problem getting image! ", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Validates all the input and returns the validity.
      * @return True if all given input is valid, false otherwise.

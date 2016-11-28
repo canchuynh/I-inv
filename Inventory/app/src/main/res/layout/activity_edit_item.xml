@@ -78,4 +78,25 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/save_edits_button" />
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/edit_image_view"
+        android:layout_below="@+id/edit_description_field"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp" />
+
+    <Button
+        android:text="Change Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_image_button"
+        android:layout_above="@+id/save_edits_button"
+        android:layout_alignLeft="@+id/save_edits_button"
+        android:layout_alignStart="@+id/save_edits_button" />
+
 </RelativeLayout>
