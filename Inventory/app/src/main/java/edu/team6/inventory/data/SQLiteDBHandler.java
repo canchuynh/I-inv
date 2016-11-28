@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.team6.inventory.R;
+
 /**
  * This class handles all the SQLite actions performed by the Inventory application.
  * This handler provides the ability to add, view, edit, and delete items to/from the inventory.
@@ -100,34 +102,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Gets a list of all items from the inventory.
-     * @return A list of Item objects, each Item object representing one item in the inventory.
-     */
-    public List<Item> getAllItems() {
-        List<Item> itemList = new ArrayList<Item>();
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_ITEMS;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Item item = new Item();
-                item.setmId(Integer.parseInt(cursor.getString(0)));
-                item.setmName(cursor.getString(1));
-                item.setmValue(Double.parseDouble(cursor.getString(2)));
-                item.setmCondition(cursor.getString(3));
-                item.setmDescription(cursor.getString(4));
-                item.setmImage(cursor.getBlob(5));
-                // Adding item to list
-                itemList.add(item);
-            } while (cursor.moveToNext());
-        }
-        // return item list
-        return itemList;
-    }
-
-    /**
      * Gets the count of how many items in the inventory.
      * @return An integer representing the amount of items in the inventory.
      */
@@ -155,7 +129,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
      * Deletes all Items from the inventory.
      */
     public void deleteAllItems() { //TODO: Make into private?
-        List<Item> inventory = getAllItems();
+        List<Item> inventory = getAllItems("None");
         for(Item i : inventory) {
             deleteItem(i);
         }
@@ -181,4 +155,42 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return db.update(TABLE_ITEMS, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(updatedItem.getmId())});
     }
+
+    /**
+     * Gets a list of all items from the inventory.
+     * @return A list of Item objects, each Item object representing one item in the inventory.
+     */
+    public List<Item> getAllItems(String sortMethod) {
+        List<Item> itemList = new ArrayList<Item>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_ITEMS;
+        if (sortMethod.equals("Name (A - Z)")) {
+            selectQuery += " ORDER BY " + NAME + " COLLATE NOCASE ASC";
+        } else if (sortMethod.equals("Name (Z - A)")) {
+            selectQuery += " ORDER BY " + NAME + " COLLATE NOCASE DESC";
+        } else if (sortMethod.equals("Value (Low - High)")) {
+            selectQuery += " ORDER BY " + VALUE + " Asc";
+        } else if (sortMethod.equals("Value (High - Low)")) {
+            selectQuery += " ORDER BY " + VALUE + " DESC";
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Item item = new Item();
+                item.setmId(Integer.parseInt(cursor.getString(0)));
+                item.setmName(cursor.getString(1));
+                item.setmValue(Double.parseDouble(cursor.getString(2)));
+                item.setmCondition(cursor.getString(3));
+                item.setmDescription(cursor.getString(4));
+                item.setmImage(cursor.getBlob(5));
+                // Adding item to list
+                itemList.add(item);
+            } while (cursor.moveToNext());
+        }
+        // return item list
+        return itemList;
+    }
+
 }

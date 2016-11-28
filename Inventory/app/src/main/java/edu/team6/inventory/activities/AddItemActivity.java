@@ -84,7 +84,6 @@ public class AddItemActivity extends AppCompatActivity {
                         mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         byte[] imageData = baos.toByteArray();
                         newItem.setmImage(imageData);
-                        Toast.makeText(AddItemActivity.this, "Saving image! ", Toast.LENGTH_SHORT).show();
                     }
 
                     // Add item to local SQLite DB
@@ -106,7 +105,6 @@ public class AddItemActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) { // Anon OnClickListener
-                Toast.makeText(AddItemActivity.this, "Adding image! ", Toast.LENGTH_SHORT).show();
                 dispatchTakePictureIntent();
 
             }
@@ -129,9 +127,8 @@ public class AddItemActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             mImageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(mImageBitmap);
-            Toast.makeText(AddItemActivity.this, "Got an image! ", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(AddItemActivity.this, "Problem getting image! ", Toast.LENGTH_SHORT).show();
+            // do nothing
         }
     }
 

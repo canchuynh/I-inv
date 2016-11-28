@@ -106,7 +106,6 @@ public class EditItemActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) { // Anon OnClickListener
-                Toast.makeText(EditItemActivity.this, "Editting image! ", Toast.LENGTH_SHORT).show();
                 dispatchTakePictureIntent();
 
             }
@@ -131,9 +130,8 @@ public class EditItemActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             mImageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(mImageBitmap);
-            Toast.makeText(EditItemActivity.this, "Got an image! ", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(EditItemActivity.this, "Problem getting image! ", Toast.LENGTH_SHORT).show();
+            // do nothing
         }
     }
 

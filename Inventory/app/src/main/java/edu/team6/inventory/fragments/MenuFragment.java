@@ -235,7 +235,7 @@ public class MenuFragment extends Fragment implements
 
         SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
 
-        List<Item> inventory = dbHandler.getAllItems();
+        List<Item> inventory = dbHandler.getAllItems("None");
 
         // Export all items. One at a time.
         for (Item i : inventory) {
