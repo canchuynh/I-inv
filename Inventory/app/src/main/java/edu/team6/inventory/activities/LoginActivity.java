@@ -17,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import edu.team6.inventory.utils.SessionManager;
 
 
 /**
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final int RC_SIGN_IN = 9001;
+    SessionManager manager;
 
     // UI Components Declared for this Activity
     public EditText mEmailField;
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements
         mPasswordField = (EditText) findViewById(R.id.passwordField);
         mRegisterButton = (Button) findViewById(R.id.registerButton);
         mLoginButton = (Button) findViewById(R.id.loginButton);
+        manager = new SessionManager();
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -88,6 +91,9 @@ public class LoginActivity extends AppCompatActivity implements
     private void handleSignInResult(GoogleSignInResult result) {
 //        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+            //Session management
+            manager.setPreferences(LoginActivity.this, "status", "1");
+
             // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast toast = Toast.makeText(getApplicationContext(), acct.toString(), Toast.LENGTH_LONG);
@@ -96,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements
             startActivity(intent);
             finish();
         } else {
+            manager.setPreferences(LoginActivity.this, "status", "0");
             // Signed out, show unauthenticated UI.
             Toast toast = Toast.makeText(getApplicationContext(), "Signed out/Failed", Toast.LENGTH_LONG);
             toast.show();

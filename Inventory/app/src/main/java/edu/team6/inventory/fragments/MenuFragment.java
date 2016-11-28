@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -37,6 +39,7 @@ import edu.team6.inventory.activities.R;
 import edu.team6.inventory.activities.InventoryActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
+import edu.team6.inventory.utils.SessionManager;
 
 
 /**
@@ -44,6 +47,8 @@ import edu.team6.inventory.data.SQLiteDBHandler;
  */
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
+
+    SessionManager manager;
 
     /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
@@ -86,6 +91,7 @@ public class MenuFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        manager = new SessionManager();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -119,7 +125,18 @@ public class MenuFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_main, menu);
+        MenuItem item_signin = menu.findItem(R.id.signIn);
+        MenuItem item_logout = menu.findItem(R.id.logout);
+        String status = manager.getPreferences(getActivity(), "status");
+
+        if (status.equals("1")){
+            item_signin.setVisible(false);
+        } else if(status.equals("0")) {
+            item_logout.setVisible(false);
+        }
+
     }
 
     @Override
@@ -139,9 +156,26 @@ public class MenuFragment extends Fragment implements
             case R.id.importInv:
                 importInv();
                 return true;
+            case R.id.about:
+                about();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    //About
+    private void about() {
+        View messageView = getActivity().getLayoutInflater().inflate(R.layout.about, null, false);
+
+        // When linking text, force to always use default color. This works
+        // around a pressed color state bug.
+        TextView textView = (TextView) messageView.findViewById(R.id.about_des);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("I-inv");
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
     }
 
     /**

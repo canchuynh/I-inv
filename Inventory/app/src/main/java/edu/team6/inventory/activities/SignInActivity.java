@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import edu.team6.inventory.utils.SessionManager;
 
 
 /**
@@ -27,6 +28,7 @@ import com.google.android.gms.common.api.Status;
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
+    SessionManager manager;
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -45,6 +47,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        manager = new SessionManager();
 
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
@@ -120,6 +123,9 @@ public class SignInActivity extends AppCompatActivity implements
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+            //Session Management
+            manager.setPreferences(SignInActivity.this, "status", "1");
+
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 //            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
@@ -129,6 +135,7 @@ public class SignInActivity extends AppCompatActivity implements
             startActivity(intent);
             finish();
         } else {
+            manager.setPreferences(SignInActivity.this, "status", "0");
             // Signed out, show unauthenticated UI.
 //            updateUI(false);
         }
