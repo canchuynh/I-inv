@@ -225,9 +225,12 @@ public class AddItemActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject(result);
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
+                mNameField.setText(name);
                 String description = items.getJSONObject(0).getString("description");
+                mDescriptionField.setText(description);
                 String value = items.getJSONObject(0).getString("lowest_recorded_price");
-                String condition = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("condition");
+                mValueField.setText(value);
+                mConditionField.setText("New");
                 final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
                 if (imageURL != null && !imageURL.equals("")) { // if there is an image
@@ -246,10 +249,6 @@ public class AddItemActivity extends AppCompatActivity {
                     thread.start();
                 }
 
-                mValueField.setText(value);
-                mNameField.setText(name);
-                mConditionField.setText(condition);
-                mDescriptionField.setText(description);
 
             } catch (JSONException e) {
                 Toast.makeText(getBaseContext(), "Sorry, we couldn't find that item!", Toast.LENGTH_LONG).show();
