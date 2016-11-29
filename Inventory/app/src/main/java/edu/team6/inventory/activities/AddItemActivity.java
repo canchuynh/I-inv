@@ -226,7 +226,7 @@ public class AddItemActivity extends AppCompatActivity {
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
                 String description = items.getJSONObject(0).getString("description");
-                String value = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("price");
+                String value = items.getJSONObject(0).getString("lowest_recorded_price");
                 String condition = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("condition");
                 final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
