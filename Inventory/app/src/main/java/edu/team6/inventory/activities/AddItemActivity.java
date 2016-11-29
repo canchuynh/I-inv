@@ -1,20 +1,40 @@
 package edu.team6.inventory.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import edu.team6.inventory.R;
+
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -45,12 +65,21 @@ public class AddItemActivity extends AppCompatActivity {
     /** The Bitmap storing the image. */
     private Bitmap mImageBitmap;
 
+    private Button mAddViaScanner;
+
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final String apiurl = "https://api.upcitemdb.com/prod/trial/lookup?upc=";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         setTitle("Add A New Item");
 
+        //barcode button
+        mAddViaScanner = (Button) findViewById(R.id.item_barcode_button);
         // Connecting UI components
         mAddItemButton = (Button) findViewById(R.id.item_add_button);
         mAddImageButton = (Button) findViewById(R.id.item_add_image_button);
@@ -101,6 +130,19 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+
+        //Add listner for mAddViaScanner
+        mAddViaScanner.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+            }
+        });
+
+        // Attach listener to add image button
         mAddImageButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -109,6 +151,111 @@ public class AddItemActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            // IF THE ACTIVITY RESULT WAS FROM THE BARCODE SCANNER
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    String url = apiurl + barcode.displayValue;
+                    new HttpAsyncTask().execute(url);
+                    Log.w("Result: ", barcode.displayValue);
+                } else {
+                    Log.d("warning:", "No barcode captured, intent data is null");
+                }
+            } else {
+               Log.w("warning:", "resultCode Failure");
+            }
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // IF THE ACTIVITY RESULT WAS FROM THE CAMERA (Adding an image to an item)
+            Bundle extras = data.getExtras();
+            mImageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(mImageBitmap);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /**
+     * Returns a bitmap from a given URL.
+     * @param src the url of the image to get a bitmap of.
+     * @return a bitmap of the image at a given url.
+     */
+    private Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
+    public static String GET(String api) {
+        StringBuilder result = new StringBuilder();
+        try {
+            URL url = new URL(api);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            while((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+
+        } catch (Exception e){
+            Log.d("GET", e.getLocalizedMessage());
+        }
+
+        return result.toString();
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            return GET(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            try {
+                JSONObject json = new JSONObject(result);
+                JSONArray items = json.getJSONArray("items");
+                String name = items.getJSONObject(0).getString("title");
+                String description = items.getJSONObject(0).getString("description");
+                String condition = items.getJSONObject(0).getString("condition");
+                String imageURL = items.getJSONObject(0).getString("images");
+                Bitmap queryImage = getBitmapFromURL(imageURL);
+                
+
+                mNameField.setText(name);
+                mConditionField.setText(condition);
+                mDescriptionField.setText(description);
+
+            } catch (JSONException e) {
+                Toast.makeText(getBaseContext(), "Sorry, we couldn't find that item!", Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
     /**
@@ -121,16 +268,6 @@ public class AddItemActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            mImageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(mImageBitmap);
-        } else {
-            // do nothing
-        }
-    }
 
     /**
      * Validates all the input and returns the validity.

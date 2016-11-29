@@ -19,7 +19,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import edu.team6.inventory.R;
+
 
 /**
  * NOT USED DO NOT GRADE THIS CLASS.

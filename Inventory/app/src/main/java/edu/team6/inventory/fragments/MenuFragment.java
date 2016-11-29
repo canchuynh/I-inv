@@ -34,7 +34,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.team6.inventory.R;
+import edu.team6.inventory.activities.R;
 import edu.team6.inventory.activities.InventoryActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
