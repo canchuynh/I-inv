@@ -140,8 +140,24 @@ public class MenuFragment extends Fragment implements
             case R.id.importInv:
                 importInv();
                 return true;
+            case R.id.share:
+                share();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void share() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"canchuynh@aim.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Hello from I:Inv");
+        i.putExtra(Intent.EXTRA_TEXT   , "Body");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this.getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
 
