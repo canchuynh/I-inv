@@ -243,6 +243,9 @@ public class AddItemActivity extends AppCompatActivity {
                 String name = items.getJSONObject(0).getString("title");
                 String description = items.getJSONObject(0).getString("description");
                 String condition = items.getJSONObject(0).getString("condition");
+                String imageURL = items.getJSONObject(0).getString("images");
+                Bitmap queryImage = getBitmapFromURL(imageURL);
+                
 
                 mNameField.setText(name);
                 mConditionField.setText(condition);
