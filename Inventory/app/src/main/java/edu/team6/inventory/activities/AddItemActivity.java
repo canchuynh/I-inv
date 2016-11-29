@@ -230,19 +230,21 @@ public class AddItemActivity extends AppCompatActivity {
                 String condition = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("condition");
                 final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
-                Thread thread = new Thread(new Runnable(){
-                    public void run() {
-                        try {
-                            queryImage = getBitmapFromURL(imageURL);
-                            mImageBitmap = queryImage;
-                            mImageView.setImageBitmap(mImageBitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                if (imageURL != null && !imageURL.equals("")) { // if there is an image
+                    Thread thread = new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                queryImage = getBitmapFromURL(imageURL);
+                                mImageBitmap = queryImage;
+                                mImageView.setImageBitmap(mImageBitmap);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
+                    });
 
-                thread.start();
+                    thread.start();
+                }
 
                 mValueField.setText(value);
                 mNameField.setText(name);
