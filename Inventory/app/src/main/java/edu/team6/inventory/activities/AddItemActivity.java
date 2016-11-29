@@ -154,6 +154,7 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
+            // IF THE ACTIVITY RESULT WAS FROM THE BARCODE SCANNER
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
@@ -167,6 +168,7 @@ public class AddItemActivity extends AppCompatActivity {
                Log.w("warning:", "resultCode Failure");
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // IF THE ACTIVITY RESULT WAS FROM THE CAMERA (Adding an image to an item)
             Bundle extras = data.getExtras();
             mImageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(mImageBitmap);
@@ -220,30 +222,14 @@ public class AddItemActivity extends AppCompatActivity {
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
                 String description = items.getJSONObject(0).getString("description");
-                String bran = items.getJSONObject(0).getString("brand");
+                String condition = items.getJSONObject(0).getString("condition");
 
-                //title.setText(name);
-                //Toast.makeText(getBaseContext(),name,Toast.LENGTH_LONG).show();
-                //des.setText(description);
-                //brand.setText(bran);
-                final SQLiteDBHandler DBhandler = new SQLiteDBHandler(getBaseContext());
-                Double itemValue = 0.00;
-                // Create an item to add
-                Item newItem = new Item(name, itemValue, bran, description);
+                mNameField.setText(name);
+                mConditionField.setText(condition);
+                mDescriptionField.setText(description);
 
-                // Add item to local SQLite DB
-                DBhandler.addItem(newItem);
-                DBhandler.close();
-
-                // Move back to viewing inventory after adding an item
-                Intent backToViewInventory = new Intent(AddItemActivity.this, InventoryActivity.class);
-                backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                Toast.makeText(AddItemActivity.this, "Item successfully added! ", Toast.LENGTH_SHORT).show();
-                startActivity(backToViewInventory);
             } catch (JSONException e) {
-                Toast.makeText(getBaseContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Sorry, we couldn't find that item!", Toast.LENGTH_LONG).show();
             }
 
         }
