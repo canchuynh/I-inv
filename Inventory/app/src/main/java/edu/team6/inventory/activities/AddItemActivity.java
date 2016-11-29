@@ -179,25 +179,6 @@ public class AddItemActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Returns a bitmap from a given URL.
-     * @param src the url of the image to get a bitmap of.
-     * @return a bitmap of the image at a given url.
-     */
-    private Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -228,6 +209,9 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        Bitmap queryImage;
+
         @Override
         protected String doInBackground(String... urls) {
             return GET(urls[0]);
@@ -242,11 +226,25 @@ public class AddItemActivity extends AppCompatActivity {
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
                 String description = items.getJSONObject(0).getString("description");
-                String condition = items.getJSONObject(0).getString("condition");
-                String imageURL = items.getJSONObject(0).getString("images");
-                Bitmap queryImage = getBitmapFromURL(imageURL);
-                
+                String value = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("price");
+                String condition = items.getJSONObject(0).getJSONArray("offers").getJSONObject(0).getString("condition");
+                final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
+                Thread thread = new Thread(new Runnable(){
+                    public void run() {
+                        try {
+                            queryImage = getBitmapFromURL(imageURL);
+                            mImageBitmap = queryImage;
+                            mImageView.setImageBitmap(mImageBitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                thread.start();
+
+                mValueField.setText(value);
                 mNameField.setText(name);
                 mConditionField.setText(condition);
                 mDescriptionField.setText(description);
@@ -256,6 +254,29 @@ public class AddItemActivity extends AppCompatActivity {
             }
 
         }
+
+
+        /**
+         * Returns a bitmap from a given URL.
+         * @param src the url of the image to get a bitmap of.
+         * @return a bitmap of the image at a given url.
+         */
+        private Bitmap getBitmapFromURL(String src) {
+            try {
+                URL url = new URL(src);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                // do nothing
+                e.printStackTrace();
+                return null;
+            }
+        }
+
     }
 
     /**
