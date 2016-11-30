@@ -2,6 +2,7 @@ package edu.team6.inventory.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -76,6 +77,9 @@ public class EditItemActivity extends AppCompatActivity {
         mValueField.setText(theEditItem.getmValue() + "");
         mConditionField.setText(theEditItem.getmCondition());
         mDescriptionField.setText(theEditItem.getmDescription());
+        mImageBitmap = BitmapFactory.decodeByteArray(theEditItem.getmImage(), 0, theEditItem.getmImage().length);
+        mImageView.setImageBitmap(mImageBitmap);
+
 
         // Sets the save button's onclick
         mSaveEditsButton.setOnClickListener(new View.OnClickListener(){

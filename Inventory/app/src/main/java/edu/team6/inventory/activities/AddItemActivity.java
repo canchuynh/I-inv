@@ -2,11 +2,18 @@ package edu.team6.inventory.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.graphics.BitmapFactory;
+>>>>>>> origin/scan
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.graphics.Bitmap;
+<<<<<<< HEAD
 import android.os.StrictMode;
+=======
+>>>>>>> origin/scan
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +23,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/scan
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -25,6 +36,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -151,6 +163,10 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/scan
         //Add listner for mAddViaScanner
         mAddViaScanner.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -162,12 +178,24 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+        // Attach listener to add image button
+        mAddImageButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) { // Anon OnClickListener
+                dispatchTakePictureIntent();
+
+<<<<<<< HEAD
+=======
+            }
+        });
+>>>>>>> origin/scan
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
+            // IF THE ACTIVITY RESULT WAS FROM THE BARCODE SCANNER
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
@@ -180,11 +208,37 @@ public class AddItemActivity extends AppCompatActivity {
             } else {
                 Log.w("warning:", "resultCode Failure");
             }
+<<<<<<< HEAD
+=======
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // IF THE ACTIVITY RESULT WAS FROM THE CAMERA (Adding an image to an item)
+            Bundle extras = data.getExtras();
+            mImageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(mImageBitmap);
+>>>>>>> origin/scan
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
+    /**
+     * Returns a bitmap from a given URL.
+     * @param src the url of the image to get a bitmap of.
+     * @return a bitmap of the image at a given url.
+     */
+    private Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
@@ -246,41 +300,42 @@ public class AddItemActivity extends AppCompatActivity {
                 JSONArray items = json.getJSONArray("items");
                 String name = items.getJSONObject(0).getString("title");
                 String description = items.getJSONObject(0).getString("description");
-                String bran = items.getJSONObject(0).getString("brand");
+                String condition = items.getJSONObject(0).getString("condition");
+                String imageURL = items.getJSONObject(0).getString("images");
+                Bitmap queryImage = getBitmapFromURL(imageURL);
+                
 
-                //title.setText(name);
-                //Toast.makeText(getBaseContext(),name,Toast.LENGTH_LONG).show();
-                //des.setText(description);
-                //brand.setText(bran);
-                final SQLiteDBHandler DBhandler = new SQLiteDBHandler(getBaseContext());
-                Double itemValue = 0.00;
-                // Create an item to add
-                Item newItem = new Item(name, itemValue, bran, description);
+                mNameField.setText(name);
+                mConditionField.setText(condition);
+                mDescriptionField.setText(description);
 
-                // Add item to local SQLite DB
-                DBhandler.addItem(newItem);
-                DBhandler.close();
-
-                // Move back to viewing inventory after adding an item
-                Intent backToViewInventory = new Intent(AddItemActivity.this, InventoryActivity.class);
-                backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                Toast.makeText(AddItemActivity.this, "Item successfully added! ", Toast.LENGTH_SHORT).show();
-                startActivity(backToViewInventory);
             } catch (JSONException e) {
-                Toast.makeText(getBaseContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Sorry, we couldn't find that item!", Toast.LENGTH_LONG).show();
             }
             mAddImageButton.setOnClickListener(new View.OnClickListener() {
 
+<<<<<<< HEAD
                 @Override
                 public void onClick(View v) { // Anon OnClickListener
                     dispatchTakePictureIntent();
 
                 }
             });
+=======
+        }
+    }
+
+    /**
+     * Start an activity to take a picture to add an image to an item.
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+>>>>>>> origin/scan
         }
 
+<<<<<<< HEAD
         /**
          * Start an activity to take a picture to add an image to an item.
          */
@@ -288,6 +343,19 @@ public class AddItemActivity extends AppCompatActivity {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+=======
+
+    /**
+     * Validates all the input and returns the validity.
+     * @return True if all given input is valid, false otherwise.
+     */
+    private boolean validateFields() {
+        boolean result = true;
+        for (Item item : itemList) {
+            if (item.getmName().equals(mNameField.getText().toString())) {
+                result = false;
+                Toast.makeText(AddItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/scan
             }
         }
 
