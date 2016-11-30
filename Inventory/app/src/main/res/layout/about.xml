@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:padding="20dip">
 
+    <ImageView
+        android:src="@drawable/team_logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/app_name" />
+
+
+
+
     <TextView
         android:id="@+id/about_des"
         android:layout_width="match_parent"
