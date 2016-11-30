@@ -76,7 +76,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addItem = new Intent(InventoryActivity.this, IntroActivity.class);
+                Intent addItem = new Intent(InventoryActivity.this, AddItemActivity.class);
                 // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO ADDITEM ACTIVITY
                 addItem.putExtra("ItemList", inventory);
                 startActivity(addItem);
