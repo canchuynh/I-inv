@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
+
     package="edu.team6.inventory.activities"
     android:installLocation="auto">
 
@@ -9,11 +9,11 @@
     <!-- package="edu.team6.inventory"> -->
     <!-- <uses-feature android:name="android.hardware.camera" -->
     <!-- android:required="true" /> -->
-=======
+
     package="edu.team6.inventory.activities" android:installLocation="auto">
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
->>>>>>> origin/scan
+
 
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->

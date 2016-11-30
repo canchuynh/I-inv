@@ -35,10 +35,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/scan
 import edu.team6.inventory.activities.R;
 import edu.team6.inventory.activities.InventoryActivity;
 import edu.team6.inventory.data.Item;
