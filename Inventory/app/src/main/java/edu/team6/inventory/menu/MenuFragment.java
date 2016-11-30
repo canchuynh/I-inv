@@ -31,6 +31,9 @@ import edu.team6.inventory.activities.R;
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
+    /** A constant used for signing in. */
+    private static final int RC_SIGN_IN = 9001;
+
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
 
@@ -41,9 +44,6 @@ public class MenuFragment extends Fragment implements
     public MenuFragment() {
         // Required empty public constructor
     }
-
-    /** Tag for logging. */
-    private static final String TAG = "MenuFragment";
 
 
     @Override
@@ -106,24 +106,8 @@ public class MenuFragment extends Fragment implements
             case R.id.importInv:
                 new CloudSync(googleId).importInv(getActivity());
                 return true;
-            case R.id.share:
-                share();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void share() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"canchuynh@aim.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Hello from I:Inv");
-        i.putExtra(Intent.EXTRA_TEXT   , "Body");
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this.getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
 

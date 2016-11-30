@@ -21,9 +21,4 @@
         android:title="@string/logout"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/share"
-        android:title="Share"
-        app:showAsAction="never" />
-
 </menu>
