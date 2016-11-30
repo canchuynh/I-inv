@@ -8,11 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
-import edu.team6.inventory.activities.R;
-
->>>>>>> origin/scan
 /**
  * This class handles all the SQLite actions performed by the Inventory application.
  * This handler provides the ability to add, view, edit, and delete items to/from the inventory.
