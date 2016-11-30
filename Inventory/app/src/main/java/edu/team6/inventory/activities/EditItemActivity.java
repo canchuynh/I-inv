@@ -77,8 +77,11 @@ public class EditItemActivity extends AppCompatActivity {
         mValueField.setText(theEditItem.getmValue() + "");
         mConditionField.setText(theEditItem.getmCondition());
         mDescriptionField.setText(theEditItem.getmDescription());
-        mImageBitmap = BitmapFactory.decodeByteArray(theEditItem.getmImage(), 0, theEditItem.getmImage().length);
-        mImageView.setImageBitmap(mImageBitmap);
+        if (theEditItem.getmImage() != null) {
+            mImageBitmap = BitmapFactory.decodeByteArray(theEditItem.getmImage(), 0, theEditItem.getmImage().length);
+            mImageView.setImageBitmap(mImageBitmap);
+        }
+
 
 
         // Sets the save button's onclick
