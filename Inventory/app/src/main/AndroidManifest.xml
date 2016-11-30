@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.team6.inventory.activities" android:installLocation="auto">
     <uses-feature android:name="android.hardware.camera"
-        android:screenOrientation="portrait"
         android:required="true" />
 
 
@@ -27,18 +26,24 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".InventoryActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InventoryActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddItemActivity" />
-        <activity android:name=".ItemDetailsActivity" />
-        <activity android:name=".EditItemActivity" />
-        <activity android:name=".BarcodeCaptureActivity"/>
+        <activity android:name=".AddItemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ItemDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditItemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BarcodeCaptureActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
