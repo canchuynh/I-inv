@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="edu.team6.inventory.activities"
     android:installLocation="auto">
+
     <uses-feature android:name="android.hardware.camera" />
 
-    <!--package="edu.team6.inventory">-->
-    <!--<uses-feature android:name="android.hardware.camera"-->
-        <!--android:required="true" />-->
+    <!-- package="edu.team6.inventory"> -->
+    <!-- <uses-feature android:name="android.hardware.camera" -->
+    <!-- android:required="true" /> -->
+
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -30,6 +31,7 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
+
         <activity android:name=".MainActivity" />
         <activity android:name=".InventoryActivity">
             <intent-filter>
@@ -41,7 +43,8 @@
         <activity android:name=".AddItemActivity" />
         <activity android:name=".ItemDetailsActivity" />
         <activity android:name=".EditItemActivity" />
-        <activity android:name=".BarcodeCaptureActivity"/>
+        <activity android:name=".BarcodeCaptureActivity" />
+        <activity android:name=".senderTest"></activity>
     </application>
 
 </manifest>

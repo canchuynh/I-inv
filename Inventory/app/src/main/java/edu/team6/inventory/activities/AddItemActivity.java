@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.graphics.Bitmap;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
+import edu.team6.inventory.utils.GMailSender;
 
 /**
  * This class handles the adding of items to the inventory, as well as
@@ -92,8 +94,10 @@ public class AddItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-        setTitle("Add A New Item");
 
+
+
+        setTitle("Add A New Item");
         //barcode button
         mAddViaScanner = (Button) findViewById(R.id.item_barcode_button);
         // Connecting UI components
@@ -134,6 +138,7 @@ public class AddItemActivity extends AppCompatActivity {
                     // Add item to local SQLite DB
                     DBhandler.addItem(newItem);
                     DBhandler.close();
+
 
                     // Move back to viewing inventory after adding an item
                     Intent backToViewInventory = new Intent(AddItemActivity.this, InventoryActivity.class);

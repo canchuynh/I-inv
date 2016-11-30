@@ -2,7 +2,10 @@ package edu.team6.inventory.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +23,14 @@ import java.util.List;
 import java.util.Map;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
-
+import edu.team6.inventory.utils.GMailSender;
+import edu.team6.inventory.fragments.ShareFragment;
 /**
  * This activity class displays the users inventory which is obtained from the local
  * SQLite database. From this activity a user able to add a new item as well as view the details
  * of a previously added item.
  */
-public class InventoryActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class InventoryActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, ShareFragment.OnCompleteListener {
 
     /** The SQLite DB handler used to store items in the inventory. */
     private SQLiteDBHandler mDBhandler;
@@ -39,6 +44,9 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
     private String mSort = "None";
     /** The current search text. */
     private String mSearchText = "";
+    /** The master email. */
+    private String baseEmail = "uwtsealteam6@gmail.com";
+    private String pw = "letsandroid";
 
 
     @Override
@@ -46,8 +54,12 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         // Connecting UI components
         mSearchView = (SearchView) findViewById(R.id.item_search);
@@ -64,11 +76,6 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
 
         // array of string of items
         final List<String> itemList = getInventoryItemNamesFromDB();
-
-        // setting up adapter for listviewu
-        //ArrayAdapter<String> itemsAdapter =
-        //        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
-
         setItemListView(mSearchText, mSort); // Creates listview of items with all inventory
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -79,6 +86,15 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
                 // ADDS LIST OF ALL ITEMS TO EXTRAS TO SEND TO ADDITEM ACTIVITY
                 addItem.putExtra("ItemList", inventory);
                 startActivity(addItem);
+            }
+        });
+
+        FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialogFragment = new ShareFragment();
+                dialogFragment.show(getSupportFragmentManager(), "Dialog");
             }
         });
 
@@ -227,4 +243,25 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
 
         }
     }
+
+    public void onComplete(String email) {
+        try {
+            ArrayList<String> names = (ArrayList) getInventoryItemNamesFromDB();
+            String body = "";
+            for (String s:names) {
+                body += s;
+                body += "\n";
+            }
+            GMailSender sender = new GMailSender(baseEmail, pw);
+            sender.sendMail("I - inv Notification",
+                    body,
+                    baseEmail,
+                    email);
+            Toast.makeText(getBaseContext(),"Inventory shared!", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
+
+    }
+
 }

@@ -49,6 +49,7 @@ public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
     SessionManager manager;
+    String email;
 
     /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
@@ -71,6 +72,8 @@ public class MenuFragment extends Fragment implements
 
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
+
+    private GoogleSignInAccount acct;
 
     /** Google User ID */
     private String googleId = "";
@@ -229,7 +232,15 @@ public class MenuFragment extends Fragment implements
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully
-            GoogleSignInAccount acct = result.getSignInAccount();
+            acct = result.getSignInAccount();
+            //get email address
+            email = acct.getEmail();
+
+            Intent intent = new Intent(getActivity().getBaseContext(), InventoryActivity.class);
+            intent.putExtra("email", acct.getEmail());
+            getActivity().startActivity(intent);
+
+
             //Save User ID to shared pref.
             SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
             sharedPref.edit().putString(getString(R.string.userId), acct.getId().toString()).commit();
@@ -380,24 +391,7 @@ public class MenuFragment extends Fragment implements
 
         @Override
         protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-//            try {
-//                JSONObject jsonObject = new JSONObject(result);
-//                String status = (String) jsonObject.get("result");
-//                if (status.equals("success")) {
-//                    Toast.makeText(this.getClass()getApplicationContext(), "Course successfully added!"
-//                            , Toast.LENGTH_LONG)
-//                            .show();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Failed to add: "
-//                                    + jsonObject.get("error")
-//                            , Toast.LENGTH_LONG)
-//                            .show();
-//                }
-//            } catch (JSONException e) {
-//                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-//                        e.getMessage(), Toast.LENGTH_LONG).show();
-//            }
+
         }
     }
 
@@ -480,4 +474,5 @@ public class MenuFragment extends Fragment implements
             }
         }
     }
+
 }
