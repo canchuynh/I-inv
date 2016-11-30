@@ -4,6 +4,7 @@ package edu.team6.inventory.menu;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +22,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.team6.inventory.activities.R;
 
@@ -62,6 +66,7 @@ public class MenuFragment extends Fragment implements
                 .build();
 
         updateUserID();
+        getActivity().invalidateOptionsMenu();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
@@ -72,6 +77,7 @@ public class MenuFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         updateUserID();
+        getActivity().invalidateOptionsMenu();
     }
 
     /**
@@ -90,14 +96,30 @@ public class MenuFragment extends Fragment implements
     }
 
     @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        boolean signedIn = googleId.equals("");
+
+        // Enable or Disable SignIn
+        menu.findItem(R.id.signIn).setEnabled(signedIn);
+        // Enable or Disable sign in required functions
+        menu.findItem(R.id.logout).setEnabled(!signedIn);
+        menu.findItem(R.id.importInv).setEnabled(!signedIn);
+        menu.findItem(R.id.export).setEnabled(!signedIn);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.signIn:
                 signIn();
+                getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.logout:
                 signOut();
+                getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.export:
                 // TODO: if no usererID stop export
