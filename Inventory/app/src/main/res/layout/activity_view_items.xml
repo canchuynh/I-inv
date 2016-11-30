@@ -8,7 +8,7 @@
     tools:context="edu.team6.inventory.activities.InventoryActivity">
 
     <fragment
-        android:name="edu.team6.inventory.fragments.MenuFragment"
+        android:name="edu.team6.inventory.menu.MenuFragment"
         android:id="@+id/menu_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
