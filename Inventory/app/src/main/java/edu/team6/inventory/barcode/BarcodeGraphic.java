@@ -1,4 +1,4 @@
-package edu.team6.inventory.activities;
+package edu.team6.inventory.barcode;
 
 
 import android.graphics.Canvas;

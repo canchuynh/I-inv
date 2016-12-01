@@ -1,4 +1,4 @@
-package edu.team6.inventory.activities;
+package edu.team6.inventory.barcode;
 
 
 import edu.team6.inventory.ui.camera.GraphicOverlay;

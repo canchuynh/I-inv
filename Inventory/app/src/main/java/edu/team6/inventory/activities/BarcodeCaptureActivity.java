@@ -1,5 +1,6 @@
 package edu.team6.inventory.activities;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,7 +29,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
-import edu.team6.inventory.activities.BarcodeTrackerFactory;
+import edu.team6.inventory.barcode.BarcodeGraphic;
+import edu.team6.inventory.barcode.BarcodeTrackerFactory;
 import edu.team6.inventory.ui.camera.CameraSource;
 import edu.team6.inventory.ui.camera.CameraSourcePreview;
 import edu.team6.inventory.ui.camera.GraphicOverlay;

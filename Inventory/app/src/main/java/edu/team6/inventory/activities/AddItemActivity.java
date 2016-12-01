@@ -231,23 +231,26 @@ public class AddItemActivity extends AppCompatActivity {
                 String value = items.getJSONObject(0).getString("lowest_recorded_price");
                 mValueField.setText(value);
                 mConditionField.setText("New");
-                final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
+                if (items.getJSONObject(0).getJSONArray("images").length() > 0) {
+                    final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
-                if (imageURL != null && !imageURL.equals("")) { // if there is an image
-                    Thread thread = new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                queryImage = getBitmapFromURL(imageURL);
-                                mImageBitmap = queryImage;
-                                mImageView.setImageBitmap(mImageBitmap);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    if (imageURL != null && !imageURL.equals("")) { // if there is an image
+                        Thread thread = new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    queryImage = getBitmapFromURL(imageURL);
+                                    mImageBitmap = queryImage;
+                                    mImageView.setImageBitmap(mImageBitmap);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    thread.start();
+                        thread.start();
+                    }
                 }
+
 
 
             } catch (JSONException e) {
