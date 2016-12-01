@@ -90,6 +90,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
+        /*
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         share.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -98,6 +99,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
                 dialogFragment.show(getSupportFragmentManager(), "Dialog");
             }
         });
+        */
 
 
         Spinner spinner = (Spinner) findViewById(R.id.sort_spinner);

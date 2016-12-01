@@ -3,12 +3,10 @@ package edu.team6.inventory.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,20 +25,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.team6.inventory.activities.R;
-import edu.team6.inventory.activities.InventoryActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
-import edu.team6.inventory.utils.SessionManager;
 
 
 /**
@@ -49,32 +39,11 @@ import edu.team6.inventory.utils.SessionManager;
 public class MenuFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
-    SessionManager manager;
-    String email;
-
     /** A constant used for signing in. */
     private static final int RC_SIGN_IN = 9001;
 
-    /** URL for creating tables to SQL server. */
-    private final static String CREATE_TABLE_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/createTable.php?";
-
-    /** URL for Dropping the table. */
-    private final static String DROP_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/dropTable.php?";
-
-    /** URL for adding items to SQL server. */
-    private final static String EXPORT_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/addItem.php?";
-
-    /** URL for adding items to SQL server. */
-    private final static String IMPORT_URL
-            = "http://cssgate.insttech.washington.edu/~_450team6/I-Inv/list.php?";
-
     /** Google API Client for google service (sign in and out). */
     private GoogleApiClient mGoogleApiClient;
-
-    private GoogleSignInAccount acct;
 
     /** Google User ID */
     private String googleId = "";
@@ -84,9 +53,6 @@ public class MenuFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    /** Tag for logging. */
-    private static final String TAG = "MenuFragment";
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +61,6 @@ public class MenuFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        manager = new SessionManager();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -105,6 +70,7 @@ public class MenuFragment extends Fragment implements
                 .build();
 
         updateUserID();
+        getActivity().invalidateOptionsMenu();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
@@ -115,6 +81,7 @@ public class MenuFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         updateUserID();
+        getActivity().invalidateOptionsMenu();
     }
 
     /**
@@ -129,18 +96,21 @@ public class MenuFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.menu_main, menu);
-        MenuItem item_signin = menu.findItem(R.id.signIn);
-        MenuItem item_logout = menu.findItem(R.id.logout);
-        String status = manager.getPreferences(getActivity(), "status");
+    }
 
-        if (status.equals("1")){
-            item_signin.setVisible(false);
-        } else if(status.equals("0")) {
-            item_logout.setVisible(false);
-        }
+    @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 
+        boolean signedIn = googleId.equals("");
+
+        // Enable or Disable SignIn
+        menu.findItem(R.id.signIn).setEnabled(signedIn);
+        // Enable or Disable sign in required functions
+        menu.findItem(R.id.logout).setEnabled(!signedIn);
+        menu.findItem(R.id.importInv).setEnabled(!signedIn);
+        menu.findItem(R.id.export).setEnabled(!signedIn);
     }
 
     @Override
@@ -149,25 +119,55 @@ public class MenuFragment extends Fragment implements
         switch (item.getItemId()) {
             case R.id.signIn:
                 signIn();
+                getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.logout:
                 signOut();
+                getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.export:
                 // TODO: if no usererID stop export
-                export(); //TODO: Rename to exportInv?
+                new CloudSync(googleId).export(getActivity()); //TODO: Rename to exportInv?
                 return true;
             case R.id.importInv:
-                importInv();
+                new CloudSync(googleId).importInv(getActivity());
                 return true;
             case R.id.about:
                 about();
+                return true;
+            case R.id.share:
+                share();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //About
+    private void share() {
+        SQLiteDBHandler dbHandler = new SQLiteDBHandler(getActivity());
+        List<Item> inventory = dbHandler.getAllItems("None");
+        String body = "Name  Value  Condition  Description"+ "\n";
+        for (Item i : inventory) {
+            body += i.getmName() + "  ";
+            body += String.valueOf(i.getmValue()) + "  ";
+            body += i.getmCondition() + "  ";
+            body += i.getmDescription() + "\n";
+        }
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_TEXT   , body);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity().getBaseContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * About
+     */
     private void about() {
         View messageView = getActivity().getLayoutInflater().inflate(R.layout.about, null, false);
 
@@ -233,15 +233,7 @@ public class MenuFragment extends Fragment implements
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully
-            acct = result.getSignInAccount();
-            //get email address
-            email = acct.getEmail();
-
-            Intent intent = new Intent(getActivity().getBaseContext(), InventoryActivity.class);
-            intent.putExtra("email", acct.getEmail());
-            getActivity().startActivity(intent);
-
-
+            GoogleSignInAccount acct = result.getSignInAccount();
             //Save User ID to shared pref.
             SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
             sharedPref.edit().putString(getString(R.string.userId), acct.getId().toString()).commit();
@@ -253,7 +245,7 @@ public class MenuFragment extends Fragment implements
                     Toast.LENGTH_LONG)
                     .show();
 
-            createTable();
+
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
@@ -262,84 +254,6 @@ public class MenuFragment extends Fragment implements
                     .show();
         }
     }
-
-    /**
-     * Creates table in web server if one does not already exist. Web server must be defined and running.
-     */
-    private void createTable() {
-        new AddItemTask().execute(CREATE_TABLE_URL + "userId=" + googleId);
-    }
-
-    /**
-     * Export SQLite database to a web server. Web server must be defined and running.
-     */
-    private void export() {
-
-        // Drops table before exporting.
-        new AddItemTask().execute(DROP_URL + "userId=" + googleId);
-
-        SQLiteDBHandler dbHandler = new SQLiteDBHandler(this.getActivity());
-
-        List<Item> inventory = dbHandler.getAllItems("None");
-
-        // Export all items. One at a time.
-        for (Item i : inventory) {
-            new AddItemTask().execute(buildAddItemURL(i).toString());
-        }
-
-        Toast.makeText(
-                this.getActivity().getApplicationContext(),
-                "Inventory Exported!",
-                Toast.LENGTH_LONG)
-                .show();
-    }
-
-    /**
-     * Export SQLite database to a web server. Web server must be defined and running.
-     */
-    private void importInv() {
-        //TODO: See if ID counter increments.
-        new DownloadInventoryTask().execute(IMPORT_URL + "userId=" +  googleId);
-        Log.d(TAG, IMPORT_URL + "userId=" + googleId);
-    }
-
-    /**
-     * Builds URL for web service.
-     * @param item Item to be converted to URL for web service.
-     * @return URL string for web service.
-     */
-    private String buildAddItemURL(Item item) {
-
-        StringBuilder sb = new StringBuilder(EXPORT_URL);
-
-        try {
-            sb.append("userId=");
-            sb.append(googleId);
-
-            sb.append("&id=");
-            sb.append(item.getmId());
-
-            sb.append("&name=");
-            sb.append(URLEncoder.encode(item.getmName(), "UTF-8"));
-
-            sb.append("&value=");
-            sb.append(item.getmValue());
-
-            sb.append("&condition=");
-            sb.append(URLEncoder.encode(item.getmCondition(), "UTF-8"));
-
-            sb.append("&description=");
-            sb.append(URLEncoder.encode(item.getmDescription(), "UTF-8"));
-        } catch(Exception e) {
-            Toast.makeText(
-                    this.getView().getContext(),
-                    "Something wrong with the url" + e.getMessage(),
-                    Toast.LENGTH_LONG)
-                    .show();
-        }
-        return sb.toString();
-    }
-
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -350,130 +264,4 @@ public class MenuFragment extends Fragment implements
                 Toast.LENGTH_LONG)
                 .show();
     }
-
-
-    /**
-     * AsyncTask class for adding items to web server.
-     */
-    private class AddItemTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to export, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-        }
-    }
-
-    /**
-     * AsyncTask class for downloading items from web server.
-     */
-    private class DownloadInventoryTask extends AsyncTask<String, Void, String> {
-
-        private SQLiteDBHandler dbHandler;
-        private List<Item> inventory;
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to download inventory: "
-                            + e.getMessage();
-                    Log.e(TAG, e.getMessage());
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            if (result.startsWith("Unable to")) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
-                        .show();
-                return;
-            }
-
-            inventory = new ArrayList<>();
-            result = Item.parseCourseJSON(result, inventory);
-            // Something wrong with the JSON returned.
-            if (result != null) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
-                        .show();
-                return;
-            }
-
-            // Everything is good, show the list of courses.
-            if (!inventory.isEmpty()) {
-
-                if (dbHandler == null) {
-                    dbHandler = new SQLiteDBHandler(getActivity());
-                }
-
-                // Delete old data so that you can refresh the local
-                // database with the network data.
-                dbHandler.deleteAllItems();
-
-                // Also, add to the local database
-                for (int i = 0; i < inventory.size(); i++) {
-                    Item item = inventory.get(i);
-                    dbHandler.addItem(item);
-                }
-
-                // Refresh Inventory list.
-                Intent intent = new Intent(getContext(), InventoryActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        }
-    }
-
 }

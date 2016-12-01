@@ -25,6 +25,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile files('libs/javax.mail-1.5.1.jar')
     compile files('libs/android-activation-1.5.5.jar')
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -33,6 +34,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.8.0'
     compile 'com.google.android.gms:play-services-vision:9.8.0'
     testCompile 'junit:junit:4.12'
+
 }
 
 

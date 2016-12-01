@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,8 +90,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_ITEMS, new String[]{KEY_ID,
                 NAME, VALUE, CONDITION, DESCRIPTION, IMAGE}, KEY_ID + "=?",
         new String[]{String.valueOf(id)}, null, null, null, null);
+        //String q = "SELECT *" + " FROM " + TABLE_ITEMS + " WHERE id = " +String.valueOf(id);
+        //Cursor cursor = db.rawQuery(q, null);
         if (cursor != null)
             cursor.moveToFirst();
+        //Log.d("Count!!!!!!!!!",String.valueOf(cursor.getCount()));
 
         Item item = new Item(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), Double.parseDouble(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
@@ -103,12 +108,13 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
      * @return An integer representing the amount of items in the inventory.
      */
     public int getItemCount() {
-        String countQuery = "SELECT * FROM " + TABLE_ITEMS;
         SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT * FROM " + TABLE_ITEMS;
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
         // return count
-        return cursor.getCount();
+        return count;
     }
 
     /**
