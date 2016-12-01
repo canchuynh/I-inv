@@ -124,7 +124,7 @@ public class AddItemActivity extends AppCompatActivity {
                     backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Toast.makeText(AddItemActivity.this, "Item successfully added! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this, "Item successfully added!", Toast.LENGTH_SHORT).show();
                     startActivity(backToViewInventory);
                 }
             }
