@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.team6.inventory.activities.R;
+import edu.team6.inventory.data.Item;
+import edu.team6.inventory.data.SQLiteDBHandler;
 
 
 /**
@@ -128,8 +130,36 @@ public class MenuFragment extends Fragment implements
             case R.id.importInv:
                 new CloudSync(googleId).importInv(getActivity());
                 return true;
+            case R.id.share:
+                share();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Shares inventory via email using user's choice of email client.
+     */
+    private void share() {
+        SQLiteDBHandler dbHandler = new SQLiteDBHandler(getActivity());
+        List<Item> inventory = dbHandler.getAllItems("None");
+        String body = "Name  Value  Condition  Description"+ "\n";
+        for (Item i : inventory) {
+            body += i.getmName() + "  ";
+            body += String.valueOf(i.getmValue()) + "  ";
+            body += i.getmCondition() + "  ";
+            body += i.getmDescription() + "\n";
+        }
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+//        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+//        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_TEXT   , body);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity().getBaseContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
 

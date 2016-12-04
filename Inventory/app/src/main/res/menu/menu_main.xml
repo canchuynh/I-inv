@@ -20,5 +20,10 @@
         android:id="@+id/logout"
         android:title="@string/logout"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/share"
+        android:title="@string/share"
+        app:showAsAction="never" />
+
 
 </menu>
