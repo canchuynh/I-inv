@@ -51,5 +51,10 @@
     <string name="barcode_failure">No barcode captured</string>
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
     <string name="share">Share</string>
+    <string name="about">About Us</string>
+
+    <!-- Strings for About Us -->
+    <string name="about_des">This app is created as the class project for Mobile Programming</string>
+    <string name="about_team">Team Members: Can Huynh, Henry Lai, Yixiang Wang</string>
 
 </resources>

@@ -24,6 +24,8 @@
         android:id="@+id/share"
         android:title="@string/share"
         app:showAsAction="never" />
-
-
+    <item
+        android:id="@+id/about"
+        android:title="@string/about"
+        app:showAsAction="never" />
 </menu>
