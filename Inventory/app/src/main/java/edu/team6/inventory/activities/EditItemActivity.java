@@ -103,7 +103,7 @@ public class EditItemActivity extends AppCompatActivity {
                     backToViewInventory.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Toast.makeText(EditItemActivity.this, "Item saved successfully! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditItemActivity.this, "Item saved successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(backToViewInventory);
                 }
             }

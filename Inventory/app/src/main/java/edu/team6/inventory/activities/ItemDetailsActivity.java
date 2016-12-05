@@ -111,7 +111,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                         // Delete the item
                         mDBhandler.deleteItem(selectedItem);
                         // Make a toast to provide feedback to user
-                        Toast.makeText(ItemDetailsActivity.this, "Item deleted! ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this, "Item deleted!", Toast.LENGTH_SHORT).show();
                         // Go back to viewing inventory
                         Intent intent = new Intent(ItemDetailsActivity.this, InventoryActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |

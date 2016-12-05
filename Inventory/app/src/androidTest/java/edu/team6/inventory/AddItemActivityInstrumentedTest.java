@@ -42,6 +42,8 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AddItemActivityInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
@@ -52,8 +54,6 @@ public class AddItemActivityInstrumentedTest {
     }
 
     @RunWith(AndroidJUnit4.class)
-    @LargeTest
-    @FixMethodOrder(MethodSorters.NAME_ASCENDING)
     public class SignActivityLoginTest {
 
         @Rule
@@ -84,7 +84,7 @@ public class AddItemActivityInstrumentedTest {
         Random r = new Random();
         onView(withId(R.id.fab))
                 .perform(click());
-        onView(withId(R.id.item_name_field)).perform(typeText("Random Item Name " + r.nextInt(5) + r.nextInt(5)+ r.nextInt(9)));
+        onView(withId(R.id.item_name_field)).perform(typeText("Random Item Name " + r.nextInt(9) + r.nextInt(9)+ r.nextInt(9)));
 
         // pressing back button to remove keyboard.
         pressBack();
