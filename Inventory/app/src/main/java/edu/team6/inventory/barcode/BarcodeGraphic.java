@@ -15,17 +15,22 @@ import com.google.android.gms.vision.barcode.Barcode;
  */
 public class BarcodeGraphic extends GraphicOverlay.Graphic {
 
+    /** ID */
     private int mId;
 
+    /** Possible colors. */
     private static final int COLOR_CHOICES[] = {
             Color.BLUE,
             Color.CYAN,
             Color.GREEN
     };
 
+    /** Color index. */
     private static int mCurrentColorIndex = 0;
 
+    /** Paint for rectangles. */
     private Paint mRectPaint;
+    /** Paint for text. */
     private Paint mTextPaint;
     private volatile Barcode mBarcode;
 
@@ -45,14 +50,25 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         mTextPaint.setTextSize(36.0f);
     }
 
+    /**
+     * Getter for ID.
+     *
+     * @return Barcode ID.
+     */
     public int getId() {
         return mId;
     }
 
+    /** Setter for ID. */
     public void setId(int id) {
         this.mId = id;
     }
 
+    /**
+     * Getter for Barcode
+     *
+     * @return Barcode.
+     */
     public Barcode getBarcode() {
         return mBarcode;
     }
