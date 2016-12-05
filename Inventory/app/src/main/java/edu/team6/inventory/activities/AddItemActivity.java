@@ -64,12 +64,13 @@ public class AddItemActivity extends AppCompatActivity {
     private ImageView mImageView;
     /** The Bitmap storing the image. */
     private Bitmap mImageBitmap;
-
+    /** The button to add items via barcode scanner */
     private Button mAddViaScanner;
 
+    /** Constant for barcode. */
     private static final int RC_BARCODE_CAPTURE = 9001;
+    /** URL to look up upc */
     private static final String apiurl = "https://api.upcitemdb.com/prod/trial/lookup?upc=";
-
 
 
     @Override
@@ -179,13 +180,15 @@ public class AddItemActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if there is internet connection.
+     *
+     * @return true if there is internet connection and false if not.
+     */
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected())
-            return true;
-        else
-            return false;
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     public static String GET(String api) {
@@ -208,6 +211,9 @@ public class AddItemActivity extends AppCompatActivity {
         return result.toString();
     }
 
+    /**
+     * This class handles the HTTP request using asynctask to retrieve barcode information.
+     */
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
         Bitmap queryImage;
