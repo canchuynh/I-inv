@@ -18,7 +18,7 @@ import edu.team6.inventory.activities.R;
 public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     /** The database version. */
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     /** The database name. */
     private static final String DATABASE_NAME = "Inventory";
     /** The name of the table to store items. */
@@ -128,14 +128,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     /**
      * Deletes all Items from the inventory.
      */
-    public void deleteAllItems() { //TODO: Make into private?
+    public void deleteAllItems() {
         List<Item> inventory = getAllItems("None");
         for(Item i : inventory) {
             deleteItem(i);
         }
-        // TODO: Drop table or del one by one?
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(TABLE_ITEMS, null, null);
     }
 
     /**
@@ -158,6 +155,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     /**
      * Gets a list of all items from the inventory.
+     * @param sortMethod The method to sort by.
      * @return A list of Item objects, each Item object representing one item in the inventory.
      */
     public List<Item> getAllItems(String sortMethod) {
