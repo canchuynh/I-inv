@@ -19,9 +19,8 @@ import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
 /**
- * Created by Can on 11/29/2016.
+ * This class handles the cloud syncing, Import and Export, of the inventory.
  */
-
 public class CloudSync {
 
     /** URL for adding items to SQL server. */
@@ -43,6 +42,11 @@ public class CloudSync {
     /** UserID from google sign in. */
     private static String googleId;
 
+    /**
+     * Constructor for cloud sync.
+     *
+     * @param googleId The user ID for the google account.
+     */
     public CloudSync(String googleId) {
         this.googleId = googleId;
         // Creates a new table for the user in the web server.
@@ -52,7 +56,7 @@ public class CloudSync {
     /**
      * Export SQLite database to a web server. Web server must be defined and running.
      *
-     * @param activity the activity calling export
+     * @param activity the activity calling export.
      */
     protected static void export(Activity activity) {
 
@@ -81,7 +85,6 @@ public class CloudSync {
      * @param activity the activity calling import
      */
     protected static void importInv(Activity activity) {
-        //TODO: See if ID counter increments.
         new DownloadInventoryTask(activity).execute(IMPORT_URL + "userId=" +  googleId);
     }
 
@@ -90,37 +93,37 @@ public class CloudSync {
      * @param item Item to be converted to URL for web service.
      * @return URL string for web service.
      */
-    private static String buildAddItemURL(Activity activity , Item item) {
+     private static String buildAddItemURL(Activity activity , Item item) {
 
-        StringBuilder sb = new StringBuilder(EXPORT_URL);
+         StringBuilder sb = new StringBuilder(EXPORT_URL);
 
-        try {
-            sb.append("userId=");
-            sb.append(googleId);
+         try {
+             sb.append("userId=");
+             sb.append(googleId);
 
-            sb.append("&id=");
-            sb.append(item.getmId());
+             sb.append("&id=");
+             sb.append(item.getmId());
 
-            sb.append("&name=");
-            sb.append(URLEncoder.encode(item.getmName(), "UTF-8"));
+             sb.append("&name=");
+             sb.append(URLEncoder.encode(item.getmName(), "UTF-8"));
 
-            sb.append("&value=");
-            sb.append(item.getmValue());
+             sb.append("&value=");
+             sb.append(item.getmValue());
 
-            sb.append("&condition=");
-            sb.append(URLEncoder.encode(item.getmCondition(), "UTF-8"));
+             sb.append("&condition=");
+             sb.append(URLEncoder.encode(item.getmCondition(), "UTF-8"));
 
-            sb.append("&description=");
-            sb.append(URLEncoder.encode(item.getmDescription(), "UTF-8"));
-        } catch(Exception e) {
-            Toast.makeText(
+             sb.append("&description=");
+             sb.append(URLEncoder.encode(item.getmDescription(), "UTF-8"));
+         } catch(Exception e) {
+             Toast.makeText(
                     activity,
                     "Something wrong with the url" + e.getMessage(),
                     Toast.LENGTH_LONG)
                     .show();
-        }
-        return sb.toString();
-    }
+         }
+         return sb.toString();
+     }
 
 
     /**
