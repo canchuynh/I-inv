@@ -13,6 +13,11 @@ import com.google.android.gms.vision.barcode.Barcode;
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
+    /**
+     * Constructor for BarcodeTrackerFactory.
+     *
+     * @param barcodeGraphicOverlay Graphic overlay.
+     */
     public BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> barcodeGraphicOverlay) {
         mGraphicOverlay = barcodeGraphicOverlay;
     }
