@@ -16,6 +16,12 @@ class BarcodeGraphicTracker extends Tracker<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mOverlay;
     private BarcodeGraphic mGraphic;
 
+    /**
+     * Constructor for BarcodeGraphicTracker.
+     *
+     * @param overlay Graphic overlay.
+     * @param graphic Barcode graphic.
+     */
     BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> overlay, BarcodeGraphic graphic) {
         mOverlay = overlay;
         mGraphic = graphic;
