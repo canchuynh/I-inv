@@ -18,6 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,33 +71,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
-            <Button
-                android:text="ADD VIA SCANNER"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_barcode_button"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <Button
-                android:text="ADD ITEM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_add_button"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <Button
-                android:text="ADD IMAGE"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_add_image_button"
-                android:layout_above="@+id/item_add_button"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -105,10 +79,37 @@
                 android:layout_below="@+id/item_description_field"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="75dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="75dp"
                 android:layout_marginRight="75dp" />
+
+            <Button
+                android:text="ADD VIA SCANNER"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_barcode_button"
+                android:layout_below="@+id/item_add_image_button" />
+
+            <Button
+                android:text="ADD ITEM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_add_button"
+                android:layout_below="@+id/item_barcode_button" />
+
+            <Button
+                android:text="ADD IMAGE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_add_image_button"
+                android:layout_below="@+id/item_image_view"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
         </RelativeLayout>
     </ScrollView>
+
+
 
 </RelativeLayout>
