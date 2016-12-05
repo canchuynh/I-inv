@@ -20,6 +20,7 @@ import edu.team6.inventory.activities.R;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -30,6 +31,10 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.*;
+
+///////
+// IMPORTANT NOTE: THESE TESTS REQUIRE DISABLING ANIMATIONS UNDER DEVELOPER SETTINGS ON DEVICE
+///////
 
 /**
  * These tests will test the activity used to add an item.
@@ -71,6 +76,9 @@ public class AddItemActivityInstrumentedTest {
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests adding an item with only a name.
+     */
     @Test
     public void testAddingAnItemName() {
         Random r = new Random();
@@ -81,9 +89,9 @@ public class AddItemActivityInstrumentedTest {
         // pressing back button to remove keyboard.
         pressBack();
 
-        // press the add item button
+        // scroll down to adding button and click
         onView(withId(R.id.item_add_button))
-                .perform(click());
+                .perform(scrollTo(), click());
 
         onView(withText("Item successfully added!"))
                 .inRoot(withDecorView(not(is(
@@ -93,6 +101,9 @@ public class AddItemActivityInstrumentedTest {
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests adding an item with only a name and value.
+     */
     @Test
     public void testAddingAnItemNameValue() {
         Random r = new Random();
@@ -104,9 +115,10 @@ public class AddItemActivityInstrumentedTest {
         // pressing back button to remove keyboard.
         pressBack();
 
-        // press the add item button
+        // scroll down to adding button and click
         onView(withId(R.id.item_add_button))
-                .perform(click());
+                .perform(scrollTo(), click());
+
 
         onView(withText("Item successfully added!"))
                 .inRoot(withDecorView(not(is(
@@ -116,6 +128,9 @@ public class AddItemActivityInstrumentedTest {
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests adding an item with a name, value, and condition.
+     */
     @Test
     public void testAddingAnItemNameValueCondition() {
         Random r = new Random();
@@ -128,9 +143,9 @@ public class AddItemActivityInstrumentedTest {
         // pressing back button to remove keyboard.
         pressBack();
 
-        // press the add item button
+        // scroll down to adding button and click
         onView(withId(R.id.item_add_button))
-                .perform(click());
+                .perform(scrollTo(), click());
 
         onView(withText("Item successfully added!"))
                 .inRoot(withDecorView(not(is(
@@ -140,6 +155,9 @@ public class AddItemActivityInstrumentedTest {
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests adding an item with a name, value, condition, and description.
+     */
     @Test
     public void testAddingAnItemNameValueConditionDescription() {
         Random r = new Random();
@@ -153,9 +171,9 @@ public class AddItemActivityInstrumentedTest {
         // pressing back button to remove keyboard.
         pressBack();
 
-        // press the add item button
+        // scroll down to adding button and click
         onView(withId(R.id.item_add_button))
-                .perform(click());
+                .perform(scrollTo(), click());
 
         onView(withText("Item successfully added!"))
                 .inRoot(withDecorView(not(is(
@@ -164,4 +182,6 @@ public class AddItemActivityInstrumentedTest {
                                 .getDecorView()))))
                 .check(matches(isDisplayed()));
     }
+
+
 }
