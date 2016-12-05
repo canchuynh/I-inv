@@ -11,72 +11,84 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.team6.inventory.activities.ItemDetailsActivity">
 
-    <TextView
-        android:text="NAME OF ITEM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/details_item_name"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp" />
-
-    <Button
-        android:text="DELETE THIS ITEM"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deleteItemButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="deleteItem"/>
+        android:layout_height="match_parent">
 
-    <Button
-        android:text="EDIT ITEM DETAILS"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/details_edit_button"
-        android:layout_above="@+id/deleteItemButton"
-        android:layout_centerHorizontal="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:text="CONDITION"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/details_item_condition"
-        android:layout_below="@+id/details_item_value"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+            <TextView
+                android:text="NAME OF ITEM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_item_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="13dp" />
 
-    <TextView
-        android:text="DESCRIPTION"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/details_item_description"
-        android:layout_below="@+id/details_item_condition"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+            <Button
+                android:text="DELETE THIS ITEM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/deleteItemButton"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="deleteItem"/>
 
-    <TextView
-        android:text="VALUE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/details_item_value"
-        android:layout_below="@+id/details_item_name"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+            <Button
+                android:text="EDIT ITEM DETAILS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_edit_button"
+                android:layout_above="@+id/deleteItemButton"
+                android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        app:srcCompat="@drawable/ic_no_image"
-        android:id="@+id/details_item_image"
-        android:layout_below="@+id/details_item_description"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp" />
+            <TextView
+                android:text="CONDITION"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_item_condition"
+                android:layout_below="@+id/details_item_value"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:text="DESCRIPTION"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_item_description"
+                android:layout_below="@+id/details_item_condition"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:text="VALUE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_item_value"
+                android:layout_below="@+id/details_item_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:srcCompat="@drawable/ic_no_image"
+                android:id="@+id/details_item_image"
+                android:layout_below="@+id/details_item_description"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
 
 </RelativeLayout>
