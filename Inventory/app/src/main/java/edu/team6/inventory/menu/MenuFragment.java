@@ -53,7 +53,6 @@ public class MenuFragment extends Fragment implements
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -126,8 +125,7 @@ public class MenuFragment extends Fragment implements
                 getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.export:
-                // TODO: if no usererID stop export
-                new CloudSync(googleId).export(getActivity()); //TODO: Rename to exportInv?
+                new CloudSync(googleId).export(getActivity());
                 return true;
             case R.id.importInv:
                 new CloudSync(googleId).importInv(getActivity());
@@ -215,8 +213,6 @@ public class MenuFragment extends Fragment implements
                 });
     }
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -240,6 +236,7 @@ public class MenuFragment extends Fragment implements
             //Save User ID to shared pref.
             SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
             sharedPref.edit().putString(getString(R.string.userId), acct.getId().toString()).commit();
+
             updateUserID();
 
             Toast.makeText(
@@ -247,8 +244,6 @@ public class MenuFragment extends Fragment implements
                     "Welcome " + acct.getDisplayName() + "!",
                     Toast.LENGTH_LONG)
                     .show();
-
-
         } else {
             Toast.makeText(
                     this.getActivity().getApplicationContext(),
