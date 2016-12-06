@@ -1,6 +1,8 @@
 package edu.team6.inventory.menu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.team6.inventory.activities.InventoryActivity;
+import edu.team6.inventory.activities.ItemDetailsActivity;
 import edu.team6.inventory.data.Item;
 import edu.team6.inventory.data.SQLiteDBHandler;
 
@@ -58,24 +61,40 @@ public class CloudSync {
      *
      * @param activity the activity calling export.
      */
-    protected static void export(Activity activity) {
+    protected static void export(final Activity activity) {
 
-        // Drops table before exporting.
-        new AddItemTask().execute(DROP_URL + "userId=" + googleId);
+        new AlertDialog.Builder(activity)
+                .setTitle("Export")
+                .setMessage("Are you sure you want to export? " +
+                        "This will delete your cloud's Inventory and replace it with your local Inventory. " +
+                        "Your images will also not be exported.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Export
+                        // Drops table before exporting.
+                        new AddItemTask().execute(DROP_URL + "userId=" + googleId);
 
-        SQLiteDBHandler dbHandler = new SQLiteDBHandler(activity);
+                        SQLiteDBHandler dbHandler = new SQLiteDBHandler(activity);
 
-        List<Item> inventory = dbHandler.getAllItems("None");
+                        List<Item> inventory = dbHandler.getAllItems("None");
 
-        // Export all items. One at a time.
-        for (Item i : inventory) {
-            new AddItemTask().execute(buildAddItemURL(activity, i));
-        }
-
-        Toast.makeText(
-                activity.getApplicationContext(),
-                "Inventory Exported!",
-                Toast.LENGTH_LONG)
+                        // Export all items. One at a time.
+                        for (Item i : inventory) {
+                            new AddItemTask().execute(buildAddItemURL(activity, i));
+                        }
+                        Toast.makeText(
+                                activity.getApplicationContext(),
+                                "Inventory Exported!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
@@ -84,8 +103,28 @@ public class CloudSync {
      *
      * @param activity the activity calling import
      */
-    protected static void importInv(Activity activity) {
-        new DownloadInventoryTask(activity).execute(IMPORT_URL + "userId=" +  googleId);
+    protected static void importInv(final Activity activity) {
+        new AlertDialog.Builder(activity)
+                .setTitle("Import")
+                .setMessage("Are you sure you want to import? This will delete your local Inventory and replace it with the cloud's Inventory.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Import
+                        new DownloadInventoryTask(activity).execute(IMPORT_URL + "userId=" +  googleId);
+                        Toast.makeText(
+                                activity.getApplicationContext(),
+                                "Inventory Imported!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     /**
