@@ -133,7 +133,7 @@ public class SQLiteUnitTest {
         assertEquals(base, database.getItemCount());
     }
 
-
+    // TEST HELPER: Gets the item key for an item.
     private int getItemKey(Item item) {
         int id = -1;
         for (Item otherItem : database.getAllItems("")) {
