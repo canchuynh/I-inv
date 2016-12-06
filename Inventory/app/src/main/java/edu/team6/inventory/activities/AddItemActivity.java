@@ -314,11 +314,18 @@ public class AddItemActivity extends AppCompatActivity {
      */
     private boolean validateFields() {
         boolean result = true;
+        // Check for duplicate item names in inventory
         for (Item item : itemList) {
             if (item.getmName().equals(mNameField.getText().toString())) {
                 result = false;
                 Toast.makeText(AddItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
+                break;
             }
+        }
+        // Checks for blank name
+        if (mNameField.getText().toString().equals("")) {
+            result = false;
+            Toast.makeText(AddItemActivity.this, "The name cannot be blank!", Toast.LENGTH_SHORT).show();
         }
         return result;
     }

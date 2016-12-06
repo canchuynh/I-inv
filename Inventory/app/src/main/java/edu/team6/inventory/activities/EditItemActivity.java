@@ -173,6 +173,11 @@ public class EditItemActivity extends AppCompatActivity {
                 Toast.makeText(EditItemActivity.this, "There already exists an item with this name!", Toast.LENGTH_SHORT).show();
             }
         }
+        // Checks for blank name
+        if (mNameField.getText().toString().equals("")) {
+            validity = false;
+            Toast.makeText(EditItemActivity.this, "The name cannot be blank!", Toast.LENGTH_SHORT).show();
+        }
         return validity;
     }
 }
