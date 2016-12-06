@@ -52,6 +52,11 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         mSearchView = (SearchView) findViewById(R.id.item_search);
         mSearchView.setOnQueryTextListener(new ItemSearchListener());
 
+        // Create placeholder/test items
+        if(getInventoryFromDB(mSort).isEmpty()) {
+            findViewById(R.id.no_items_textview).setVisibility(View.VISIBLE);
+        }
+
         // cast arraylist to pass to intent extras
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(mSort);
         mInventory = inventory;
