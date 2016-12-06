@@ -121,7 +121,7 @@ public class Item implements Serializable {
 
     /** Sets the item id.
      *  @param ID the id of the item. */
-    protected void setmId(int ID) {
+    public void setmId(int ID) {
         this.mId = ID;
     }
 

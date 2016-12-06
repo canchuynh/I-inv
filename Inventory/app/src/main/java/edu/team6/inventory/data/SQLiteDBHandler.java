@@ -191,5 +191,4 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         // return item list
         return itemList;
     }
-
 }
