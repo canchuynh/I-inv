@@ -47,8 +47,6 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         mDBhandler = new SQLiteDBHandler(this);
         setContentView(R.layout.activity_view_items);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         // Connecting UI components
         mSearchView = (SearchView) findViewById(R.id.item_search);
@@ -56,7 +54,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
 
         // Create placeholder/test items
         if(getInventoryFromDB(mSort).isEmpty()) {
-            runTestingCode();
+            createStarterItems();
         }
 
         // cast arraylist to pass to intent extras
@@ -208,7 +206,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
     /**
      * Creates initial placeholder items
      */
-    private void runTestingCode() {
+    private void createStarterItems() {
 
         // Inserting Items/Rows
         Log.d("Insert: ", "Inserting ..");
@@ -216,16 +214,5 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         mDBhandler.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
         mDBhandler.addItem(new Item("Galaxy Note 7", 699.99, "Brand New", "Comes with a free explosion after only 15 minutes of use!"));
 
-        // Reading all items
-        Log.d("Reading: ", "Reading all items..");
-        List<Item> allitems = mDBhandler.getAllItems(mSort);
-
-        for (Item item : allitems) {
-            String log = "Id: " + item.getmId() + ", Name: " + item.getmName() + ", Value: "
-                    + item.getmValue() + ", Condition: " + item.getmCondition() + ", Description: " + item.getmDescription();
-            // Writing items to log
-            Log.d("Items: : ", log);
-
-        }
     }
 }
