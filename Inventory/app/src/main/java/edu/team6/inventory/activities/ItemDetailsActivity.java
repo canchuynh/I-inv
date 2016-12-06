@@ -100,7 +100,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
     /**
      * Deletes this item from the inventory.
-     * @param view
+     * @param view The view where you are deleting this item.
      */
     public void deleteItem(View view) {
         new AlertDialog.Builder(this)

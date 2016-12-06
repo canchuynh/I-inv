@@ -64,12 +64,11 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
         // array of string of items
         final List<String> itemList = getInventoryItemNamesFromDB();
 
-        // setting up adapter for listviewu
-        //ArrayAdapter<String> itemsAdapter =
-        //        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
 
-        setItemListView(mSearchText, mSort); // Creates listview of items with all inventory
+        // Creates and sets listview with items from the inventory with a sort type;
+        setItemListView(mSearchText, mSort);
 
+        // Sets up the floating action button to add items.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +80,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
-
+        // Sets up the Sorting Dropdown "Spinner"
         Spinner spinner = (Spinner) findViewById(R.id.sort_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -102,6 +101,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
     /**
      * Creates a listview adapter for the inventory with items that contain the given search text.
      * @param searchText A string to look for matching items. If empty, include all items.
+     * @param sortMethod The sorting method used to determine the order in which items are displayed.
      */
     private void setItemListView(String searchText, String sortMethod) {
         final ArrayList<Item> inventory = (ArrayList) getInventoryFromDB(sortMethod);
@@ -164,6 +164,7 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
 
     /**
      * Gets a list of all items in the inventory.
+     * @param sortMethod The sorting method to sort items by.
      * @return A list of Item objects of every item in the inventory.
      */
     private List<Item> getInventoryFromDB(String sortMethod){

@@ -77,7 +77,8 @@ public class Item implements Serializable {
         return mName;
     }
 
-    /** Sets the item name. */
+    /** Sets the item name.
+     *  @param mName the name of the item. */
     public void setmName(String mName) {
         this.mName = mName;
     }
@@ -87,7 +88,8 @@ public class Item implements Serializable {
         return mValue;
     }
 
-    /** Sets the item value. */
+    /** Sets the item value.
+     *  @param mValue the value of the item. */
     public void setmValue(double mValue) {
         this.mValue = mValue;
     }
@@ -97,7 +99,8 @@ public class Item implements Serializable {
         return mCondition;
     }
 
-    /** Sets the item condition. */
+    /** Sets the item condition.
+     *  @param mCondition the condition of the item. */
     public void setmCondition(String mCondition) {
         this.mCondition = mCondition;
     }
@@ -107,47 +110,17 @@ public class Item implements Serializable {
         return mDescription;
     }
 
-    /** Sets the item description. */
+    /** Sets the item description.
+     *  @param mDescription the description of the item. */
     public void setmDescription(String mDescription) {
         this.mDescription = mDescription;
     }
 
-    /** Gets the item model. */
-    public String getmModel() {
-        return mModel;
-    }
-
-    /** Sets the item model. */
-    public void setmModel(String mModel) {
-        this.mModel = mModel;
-    }
-
-    /** Gets the item serial number. */
-    public String getmSerialNumber() {
-        return mSerialNumber;
-    }
-
-    /** Sets the item serial number. */
-    public void setmSerialNumber(String mSerialNumber) {
-        this.mSerialNumber = mSerialNumber;
-    }
-
-    /** Gets the item make. */
-    public String getmMake() {
-        return mMake;
-    }
-
-    /** Sets the item make. */
-    public void setmMake(String mMake) {
-        this.mMake = mMake;
-    }
-
     /** Gets the item id. */
-    public int getmId() {
-        return mId;
-    }
+    public int getmId() { return mId; }
 
-    /** Gets the item id. */
+    /** Sets the item id.
+     *  @param ID the id of the item. */
     protected void setmId(int ID) {
         this.mId = ID;
     }

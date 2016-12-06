@@ -79,10 +79,10 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
         setTitle("Add A New Item");
 
-        //barcode button
-        mAddViaScanner = (Button) findViewById(R.id.item_barcode_button);
+
         // Connecting UI components
         mAddItemButton = (Button) findViewById(R.id.item_add_button);
+        mAddViaScanner = (Button) findViewById(R.id.item_barcode_button);
         mAddImageButton = (Button) findViewById(R.id.item_add_image_button);
         mNameField = (EditText) findViewById(R.id.item_name_field);
         mValueField = (EditText) findViewById(R.id.item_value_field);
@@ -182,7 +182,6 @@ public class AddItemActivity extends AppCompatActivity {
 
     /**
      * Checks if there is internet connection.
-     *
      * @return true if there is internet connection and false if not.
      */
     public boolean isConnected() {
@@ -191,6 +190,11 @@ public class AddItemActivity extends AppCompatActivity {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
+    /**
+     * This method gets the JSON object as a string from a given API url.
+     * @param api The api url to query.
+     * @return A JSON object search result as a string.
+     */
     public static String GET(String api) {
         StringBuilder result = new StringBuilder();
         try {
@@ -226,10 +230,13 @@ public class AddItemActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            // Try and parse a successful query.
             try {
+                // Creates a JSON object from the returned result string.
                 JSONObject json = new JSONObject(result);
                 JSONArray items = json.getJSONArray("items");
+
+                // parse the JSON object to get available fields and prefills the UI components.
                 String name = items.getJSONObject(0).getString("title");
                 mNameField.setText(name);
                 String description = items.getJSONObject(0).getString("description");
@@ -237,6 +244,8 @@ public class AddItemActivity extends AppCompatActivity {
                 String value = items.getJSONObject(0).getString("lowest_recorded_price");
                 mValueField.setText(value);
                 mConditionField.setText("New");
+
+                // Load an item image if one is available from api query.
                 if (items.getJSONObject(0).getJSONArray("images").length() > 0) {
                     final String imageURL = items.getJSONObject(0).getJSONArray("images").getString(0);
 
@@ -257,8 +266,7 @@ public class AddItemActivity extends AppCompatActivity {
                     }
                 }
 
-
-
+            // Otherwise, the query produced no results.
             } catch (JSONException e) {
                 Toast.makeText(getBaseContext(), "Sorry, we couldn't find that item!", Toast.LENGTH_LONG).show();
             }

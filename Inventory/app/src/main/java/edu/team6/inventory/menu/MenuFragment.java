@@ -173,8 +173,6 @@ public class MenuFragment extends Fragment implements
         }
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-//        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
-//        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
         i.putExtra(Intent.EXTRA_TEXT   , body);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
