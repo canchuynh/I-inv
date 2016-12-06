@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////
-// NOTE: THESE TESTS MUST BE RUN ON AN EMULATOR AFTER APP INSTALLATION //
+// NOTE: THESE TESTS MUST BE RUN ON AN EMULATOR OR DEVICE              //
 // THIS IS BECAUSE THESE UNIT TESTS REQUIRE THE APP CONTEXT FOR SQLite //
 //** (MAY ALSO REQUIRE MULTIPLE TEST RUNS BEFORE SOME TESTS PASS!)   **//
 /////////////////////////////////////////////////////////////////////////
