@@ -202,17 +202,4 @@ public class InventoryActivity extends AppCompatActivity implements AdapterView.
     public void onNothingSelected(AdapterView<?> parent) {
         // do nothing
     }
-
-    /**
-     * Creates initial placeholder items
-     */
-    private void createStarterItems() {
-
-        // Inserting Items/Rows
-        Log.d("Insert: ", "Inserting ..");
-        mDBhandler.addItem(new Item("Apples", 1.52, "Fresh", "A basket of yummy apples. Restores 12hp when consumed."));
-        mDBhandler.addItem(new Item("Excalibur", 1337.00, "Durability 42/420", "The legendary sword belonging to King Arthuria."));
-        mDBhandler.addItem(new Item("Galaxy Note 7", 699.99, "Brand New", "Comes with a free explosion after only 15 minutes of use!"));
-
-    }
 }
